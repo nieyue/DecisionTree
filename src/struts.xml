@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<!--解决乱码    -->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+<!-- 指定允许上传的文件最大字节数。默认值是2097152(2M) -->
+    <constant name="struts.multipart.maxSize" value="2147483648"/>
+    <!-- 文件上传临时文件-->
+    <constant name="struts.multipart.saveDir" value="d:/temp"/>
+	 <constant name="struts.custom.i18n.resources" value="globalMessages"/>
+<!-- 动态方法调用 
+ <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+--> 
+	 <!-- 是否允许在OGNL表达式中调用静态方法，默认值为false -->  
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>  
+	  <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开
+    <constant name="struts.action.extension" value="action,do,htm"/> 
+	   -->  
+	<!-- struts受spring 管理创建 -->
+	 <constant name="struts.objectFactory" value="spring"/>
+	 
+	<!-- 取消struts2标签自带的样式 -->
+	    <constant name="struts.ui.theme" value="simple" />
+       <constant name="struts.ui.templateDir" value="template" />
+       <constant name="struts.ui.templateSuffix" value="ftl" />  
+	 
+	<package name="role" namespace="/role"  extends="json-default">
+		<action name="add" class="com.yayao.action.RoleAction" method="add">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="update" class="com.yayao.action.RoleAction" method="update">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="delete" class="com.yayao.action.RoleAction" method="delete">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="load" class="com.yayao.action.RoleAction" method="load">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="countAll" class="com.yayao.action.RoleAction" method="countAll">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="browse" class="com.yayao.action.RoleAction" method="browse">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="account" namespace="/account"  extends="json-default">
+		<global-results>
+			<result name="login" >/login.html</result>
+			<result name="index" >/index.html</result>
+		</global-results> 
+		<!-- 后台管理 系统管理员 -->
+		<action name="login" class="com.yayao.action.AccountAction" method="login">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="loginout" class="com.yayao.action.AccountAction" method="loginout">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+		<action name="valid" class="com.yayao.action.AccountAction" method="valid">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+		</action>
+
+		  <!-- 验证码 -->
+		<action name="imageAction" class="com.yayao.yanzhengma.ImageAction">
+			<result type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+	</package>
+
+</struts>    
