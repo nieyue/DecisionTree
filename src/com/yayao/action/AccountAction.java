@@ -1,4 +1,5 @@
 package com.yayao.action;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,13 +7,12 @@ import javax.annotation.Resource;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.yayao.bean.Account;
 import com.yayao.service.AccountService;
 import com.yayao.util.ActionContextUtil;
-import com.yayao.util.SHAutil;
-
-import net.sf.json.JSONObject;
+import com.yayao.util.MyDESutil;
+import com.yayao.util.MyJSON;
+import com.yayao.util.ResultUtil;
 
 
 /**
@@ -20,7 +20,7 @@ import net.sf.json.JSONObject;
  * @author yy
  *
  */
-public class AccountAction extends ActionSupport{
+public class AccountAction extends BaseAction<Account,Integer>{
 	
 	/**
 	 * 
@@ -29,29 +29,27 @@ public class AccountAction extends ActionSupport{
 
 	@Resource
 	private AccountService accountService;
-	private JSONObject result;//返回数据
-	
-	private String phone;//登陆账号
-	private String password;//登陆密码
-	private String validate;	//验证码
 
-	public String getPhone() {
-		return phone;
+	private String validate;	//验证码
+	private Account account=new Account();
+	
+	
+
+	/*public Account getAccount() {
+		return account;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	public void setAccount(Account account) {
+		this.account = account;
+	}*/
 	public String getValidate() {
 		return validate;
 	}
 	public void setValidate(String validate) {
 		this.validate = validate;
+	}
+	@Override
+	public Account getModel() {
+		return account;
 	}
 	/**
 	 * 登陆
@@ -60,21 +58,18 @@ public class AccountAction extends ActionSupport{
 	 */
 	public String login()  {
 		Map<String,Object> session = ActionContextUtil.getSession();
-		String shapwd;
 		Map<String,Object> map=new HashMap<String,Object>();
-		try {
-			shapwd = SHAutil.getSHA(password);
-			map.put("code", 200);
-			map.put("msg", "成功");
-			map.put("data", shapwd);
-			 result=JSONObject.fromObject(map);
-			//result=json.toString();
-			return SUCCESS;
-		} catch (Exception e) {
-			map.put("code", 4000);
-			map.put("msg", "失败");
-			result=JSONObject.fromObject(map);
+		String shapwd = MyDESutil.getMD5(account.getPassword());
+		Account a=accountService.accountLogin(account.getPhone(),shapwd);
+		if(a==null){
+			map.put("data", a);
+			result=ResultUtil.getSlefSRList("40000", "账户或密码错误", MyJSON.getJSONObject(map));
 			return ERROR;
+		}else{
+			session.put("account", a);
+			map.put("data", a);
+			result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
+			return SUCCESS;
 		}
 	}
 	/**
@@ -90,14 +85,10 @@ public class AccountAction extends ActionSupport{
 			if(a!=null){
 				session.remove("account");
 				session.clear();
-				map.put("code", 200);
-				map.put("msg", "成功");
-				result=JSONObject.fromObject(map);
+				result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
 				return SUCCESS;
 			}else{
-				map.put("code", 40000);
-				map.put("msg", "失败");
-				result=JSONObject.fromObject(map);
+				result=ResultUtil.getSlefSRFailList(MyJSON.getJSONObject(map));
 				return ERROR;
 			}
 			
@@ -110,22 +101,51 @@ public class AccountAction extends ActionSupport{
 		Map<String,Object>  session = ActionContextUtil.getSession();
 		Map<String,Object> map=new HashMap<String,Object>();
 		if(session.get("random").equals(validate)) {
-			map.put("code", 200);
-			map.put("msg", "成功");
-			result=JSONObject.fromObject(map);
+			result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
 			return SUCCESS;
 		}
-		map.put("code", 40000);
-		map.put("msg", "失败");
-		result=JSONObject.fromObject(map);
+		result=ResultUtil.getSlefSRFailList(MyJSON.getJSONObject(map));
 		return ERROR;
 	}
-	public JSONObject getResult() {
-		return result;
-	}
-	public void setResult(JSONObject result) {
-		this.result = result;
-	}
 
+	/**
+	 * 数量
+	 */
+	public String countAll()  {
+		return super.countAll(null, null, null, null, null, null, null, null);
+	}
+	/**
+	 * 查询
+	 */
+	public String list()  {
+		return super.list(1, 10, null, null, null, null, null, null, null, null, null, null);
+	}
+	
+	/**
+	 * 增加
+	 */
+	public String add()  {
+		account.setCreateDate(new Date());
+		account.setLoginDate(new Date());
+		return super.add(account);
+	}
+	/**
+	* 更新
+	*/
+	public String update()  {
+		return super.update(account);
+	}
+	/**
+	 * 删除
+	 */
+	public String delete()  {
+		return super.delete(account.getAccountId());
+	}
+	/**
+	*加载
+	*/
+	public String load()  {
+		return super.load(account.getAccountId());
+	}
 	
 }

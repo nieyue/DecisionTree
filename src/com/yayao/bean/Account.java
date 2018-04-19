@@ -1,9 +1,12 @@
 package com.yayao.bean;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,7 +26,8 @@ public class Account implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
+	@SequenceGenerator(name = "increment",initialValue = 1000)
 	private Integer accountId;
 	/**
 	 * 手机号
@@ -37,6 +41,14 @@ public class Account implements java.io.Serializable {
 	 * 真实姓名
 	 */
 	private String realname;
+	/**
+	 * 创建时间
+	 */
+	private Date createDate;
+	/**
+	 * 登陆时间
+	 */
+	private Date loginDate;
 	/**
 	 * 角色Id
 	 */
@@ -98,6 +110,22 @@ public class Account implements java.io.Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(Date loginDate) {
+		this.loginDate = loginDate;
 	}
 	
 }

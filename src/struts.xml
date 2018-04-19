@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
+	<constant name="" value=""></constant>
 <!--解决乱码    -->
     <constant name="struts.i18n.encoding" value="UTF-8" />
 <!-- 指定允许上传的文件最大字节数。默认值是2097152(2M) -->
@@ -23,49 +24,26 @@
 	    <constant name="struts.ui.theme" value="simple" />
        <constant name="struts.ui.templateDir" value="template" />
        <constant name="struts.ui.templateSuffix" value="ftl" />  
-	 
+       <!-- 页面 -->
+       <!-- <package name="html" namespace="/"  extends="struts-default">
+		<global-results>
+			<result name="login"  >/login.html</result>
+			<result name="index" >/index.html</result>
+		</global-results> 
+		</package> -->
+	 <!-- 工具包 -->
+	<package name="tool" namespace="/tool"  extends="json-default">
+	 <!-- 验证码 -->
+		<action name="imageAction" class="com.yayao.yanzhengma.ImageAction">
+			<result type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+	 </package>
+	  <!-- 角色 -->
 	<package name="role" namespace="/role"  extends="json-default">
-		<action name="add" class="com.yayao.action.RoleAction" method="add">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="update" class="com.yayao.action.RoleAction" method="update">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="delete" class="com.yayao.action.RoleAction" method="delete">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="load" class="com.yayao.action.RoleAction" method="load">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="countAll" class="com.yayao.action.RoleAction" method="countAll">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="browse" class="com.yayao.action.RoleAction" method="browse">
+		<action name="*" class="com.yayao.action.RoleAction" method="{1}">
 			<result name="success" type="json">
 				<param  name="root">result</param>
 			</result>
@@ -74,43 +52,14 @@
 			</result>
 		</action>
 	</package>
-	
+	<!-- 账户-->
 	<package name="account" namespace="/account"  extends="json-default">
-		<global-results>
-			<result name="login" >/login.html</result>
-			<result name="index" >/index.html</result>
-		</global-results> 
-		<!-- 后台管理 系统管理员 -->
-		<action name="login" class="com.yayao.action.AccountAction" method="login">
+		<action name="*" class="com.yayao.action.AccountAction" method="{1}">
 			<result name="success" type="json">
 				<param  name="root">result</param>
 			</result>
 			<result name="error" type="json">
 				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="loginout" class="com.yayao.action.AccountAction" method="loginout">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-		<action name="valid" class="com.yayao.action.AccountAction" method="valid">
-			<result name="success" type="json">
-				<param  name="root">result</param>
-			</result>
-			<result name="error" type="json">
-				<param  name="root">result</param>
-			</result>
-		</action>
-
-		  <!-- 验证码 -->
-		<action name="imageAction" class="com.yayao.yanzhengma.ImageAction">
-			<result type="stream">
-				<param name="contentType">image/jpeg</param>
-				<param name="inputName">inputStream</param>
 			</result>
 		</action>
 	</package>

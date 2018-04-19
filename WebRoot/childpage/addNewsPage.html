@@ -1,0 +1,485 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no" name="viewport" />
+
+<title>七秒后台</title>
+<style>
+	.news_add_page{
+		margin: 0 auto;
+		width:100% !important;
+		height:100%;
+		/* background:url(/static/images/2.jpg) ; */
+		background-size:100% 100%;
+	}
+	#form_info{
+		/* color:red; */
+		font-size: 17px;
+		font-style: red;
+	}
+	#form_info select{
+		position: relative;
+	    width: 216px;
+	    height: 32px;
+	}	
+	.news_img_div{
+		position: relative;
+	    width: 100%;
+	}
+	.btn-success{
+		position: absolute;
+	    /* border: 1px solid #333; */
+	    /* padding: 6px 25px; */
+	    font-size: 15px;
+	    top: 41%;
+	    left: 0%;
+	} 
+	.pic_div{
+		position: relative;
+	    width: 610px;
+    	height: 200px;
+	    top:-14px;
+	}
+	.pic_div img{
+		width:200px;
+		height:200px;
+		padding:1px;
+	}
+	#img1{
+		position: relative;
+	}
+	#img2{
+		position: relative; 
+	}
+	#img3{
+		position: relative; 
+		left:2; 
+	}
+	.delete1{
+		position: absolute;
+	    width: 200px;
+	    height: 200px;
+	    background-color: #ccc;
+	    top: 0px;
+	    text-align: center;
+	    line-height: 6;
+	    opacity:0.7;
+	    display: none;
+	}
+	.delete1 a{
+		font-size: 30px;
+	    font-weight: 700;
+	    color: red;
+	}
+	.delete2{
+		position: absolute;
+	    width: 200px;
+	    height: 200px;
+	    background-color: #ccc;
+	    top: 0px;
+	    left: 206px;
+	    text-align: center;
+	    line-height: 6;
+	    opacity:0.7;
+	    display: none;
+	}
+	.delete2 a{
+		font-size: 30px;
+	    font-weight: 700;
+	    color: red;
+	}
+	.delete3{
+		position: absolute;
+	    width: 200px;
+	    height: 200px;
+	    background-color: #ccc;
+	    top: 0px;
+	    left: 412px;
+	    text-align: center;
+	    line-height: 6;
+	    opacity:0.7;
+	    display: none;
+	}
+	.delete3 a{
+		font-size: 30px;
+	    font-weight: 700;
+	    color: red;
+	}
+	.news_img_div input[type=file]{
+		position: absolute;
+	    top: 43%;
+	    width: 101px;
+	    height: 33px;
+	    opacity: 0;
+	}
+	.txt{
+		font-size: 20px;
+	    margin-left: 102px;
+	    border: 0px;
+	    width: 190px;
+	}
+	.news_img img{
+		margin-top:5px;
+		display: none;
+	}
+	.content_div{
+		position: relative;
+	    top: 13px;
+	    width: 831px;
+	    left: 1px;
+		
+	}
+	.ipt_btn{
+		position: relative;
+		top:25px;
+		width: 150px;
+	}
+	#sp_msg{
+		position: relative;
+	    font-size: 23px;
+	    left: 6px;
+	    top: 3px;
+		color: red;
+		opacity:0;
+	}
+	#sp_msg2{
+		position: relative;
+	    font-size: 23px;
+	    left: 6px;
+	    top: 3px;
+		color: red;
+		opacity:0;
+	}
+/*富文本编辑器*/
+	#textarea1{
+		width:100%;
+		height:350px;
+	}		
+</style>
+</head>
+
+<body>
+<div class="news_add_page">
+	<form action="" id="form_info" enctype="multipart/form-data">
+		新闻标题(必填)&nbsp<input id="title_ipt" type="text" name="title"  placeholder="请输入新闻标题..."/><span id="sp_msg">ss</span></br></br>
+		新闻类型(必选)&nbsp
+			<select id="slct">
+				<option value="1">行业资讯</option>
+				<option value="2">公司新闻</option>
+				<option value="3">优质服务</option>
+			</select>
+		</br></br>
+		新闻状态(必选)&nbsp
+			<select id="slct_sataus">
+				<option value="1">上架</option>
+				<option value="2">下架</option>
+			</select>
+			</br></br>
+		
+		<div class="news_img_div">
+			封面图片(可填)&nbsp
+			<input type="button" class="btn btn-success" value="请选择图片" /></br>
+			<input type="text" class="txt" readonly="readonly" />
+			<input type="file" id="pic_file" name="fileName" multiple="multiple" />	
+		</div><br>
+		<div class="pic_div">	
+				<img id='img1' src=''/><div class='delete1' ><a href='javascript:;'>删除</a></div>
+				<img id='img2' src=''/><div class='delete2' ><a href='javascript:;'>删除</a></div>
+				<img id='img3' src=''/><div class='delete3' ><a href='javascript:;'>删除</a></div> 
+		</div> 
+		<div class="content_div">
+		新闻内容(必填)&nbsp<span id="sp_msg2">sss</span><br>
+		<textarea  id="textarea1" >
+			
+		</textarea >
+		
+        </div>
+        
+       <input type="button" class="btn btn-success ipt_btn" value="上传">
+        
+	</form>
+</div>	
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/wangEditor2/js/wangEditor.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	var domainUrl="http://"+newsUtils.domain().SevenSeconds;
+	//创建wangEditor编辑器
+	var editor=newsUtils.createEditor("textarea1");
+	//图片组件 
+	//图片上传、删除：逻辑原理--
+			//定义一个数组picArray,给file标签添加chang()事件，每次触发就获取图片信息，验证通过
+			//就上传到图片服务器，并返回图片URL添加到数组中，然后 
+			//1、从数组中获取图片的url，动态及时显示上传的图片  
+			//2、为图片添加mouseover事件：必须有图片才触发事件 
+			//3、为每个图片添加点击事件 进行删除，同时更新图片显示顺序，并把图片url发送到后台图片服务器进行删除   
+	//var imgSrc=newsUtils.createPicUpload("#pic_file",".txt","#form_info",".pic_div");
+	var arr=createPicUpload("#pic_file",".txt","#form_info",".pic_div");
+	//为图片1添加点击事件 进行删除，同时更新图片显示顺序，并把图片url发送到后台图片服务器进行删除  
+	$(".delete1 a").on("click",function(){
+			//1、获取第一个图片的url 
+			var deleteSrc=$("#img1").attr("src");
+			//2、删除第一个图片(url) 
+			$("#img1").attr("src","")
+			//3、在图片url数组里面删除 第一个图片(url)
+			//截取数组，并在数组中删除：arr.splice(index,length)  index:起始位置，length：截取长度 
+			arr.splice(0,1);
+			//4、删除界面上所有图片的url，不操作图片数组   
+			$(".pic_div").find("img").each(function(i,e){
+				$(e).attr("src","");
+			});
+			//5、根据新的图片数组，进行显示 
+			for(var i=0;i<arr.length;i++){
+				if(i==0){
+					$("#img1").attr("src",arr[i]);
+				}
+				if(i==1){
+					$("#img2").attr("src",arr[i]);
+				}
+				if(i==2){
+					$("#img3").attr("src",arr[i]);
+				}
+			}
+			//调用：发送ajax请求到后台图片服务器删除图片的方法 
+			deletePic(deleteSrc)
+	});
+	
+	//为图片2添加点击事件 进行删除，同时更新图片显示顺序，并把图片url发送到后台图片服务器进行删除  
+	$(".delete2 a").on("click",function(){
+		var deleteSrc=$("#img2").attr("src");
+		$("#img2").attr("src","")
+		arr.splice(1,1);
+		console.log(arr);
+		$(".pic_div").find("img").each(function(i,e){
+			$(e).attr("src","");
+		});
+		for(var i=0;i<arr.length;i++){
+			if(i==0){
+				$("#img1").attr("src",arr[i]);
+			}
+			if(i==1){
+				$("#img2").attr("src",arr[i]);
+			}
+			if(i==2){
+				$("#img3").attr("src",arr[i]);
+			}
+		}
+		//调用：发送ajax请求到后台图片服务器删除图片的方法 
+		deletePic(deleteSrc)
+	});
+	//为图片3添加点击事件 进行删除，同时更新图片显示顺序，并把图片url发送到后台图片服务器进行删除  
+	$(".delete3 a").on("click",function(){
+		var deleteSrc=$("#img3").attr("src");
+		$("#img3").attr("src","")
+		arr.splice(2,1);
+		console.log(arr);
+		$(".pic_div").find("img").each(function(i,e){
+			$(e).attr("src","");
+		});
+		for(var i=0;i<arr.length;i++){
+			if(i==0){
+				$("#img1").attr("src",arr[i]);
+			}
+			if(i==1){
+				$("#img2").attr("src",arr[i]);
+			}
+			if(i==2){
+				$("#img3").attr("src",arr[i]);
+			}
+		}
+		//调用：发送ajax请求到后台图片服务器删除图片的方法 
+		deletePic(deleteSrc)
+	});
+ 	//通过图片url,发送ajax请求到后台，在图片服务器是删除该图片 
+	function deletePic(deleteSrc){
+		$.ajax({
+			url:domainUrl+"/addPage/pic/delete",
+			data:{"deleteSrc":deleteSrc},
+			type:"post",
+			success:function(result){
+				console.log(result);
+			}	
+		});
+	}	 
+	
+	function createPicUpload(e1,e2,e3,e4){
+		//建一个数组，用于接收返回的图片url，count用于标记图片张数
+		var picArray=new Array();
+		//var count=0;
+		//为file标签添加change事件 
+		$(e1).change(function(){
+			//初始化图片格式、大小 
+			var options={
+					picType:["jpg","jpeg","gif","png","bmp"],
+					picSize:1
+			}
+			var file=$(e1).get(0).files[0];
+			//判断是否上传了图片
+			if(typeof(file)=="undefined"){
+				alert("请上传图片！");
+				return false;
+			}
+			//图片格式判断 
+			var fileType=file.type.substr(file.type.lastIndexOf("/")+1);
+			//console.log(file);
+			/*
+			*	jQuery.inArray( value, array [, fromIndex ] )   
+			*/
+			if($.inArray(fileType,options.picType)<0){
+				alert("图片格式错误!");
+				return false;
+			} 
+			//图片大小判断 
+			var size=file.size;
+			if(Math.round(size/1024*100/1024)/100>options.picSize){//B 转为MB
+				alert("图片大小不能超过1MB");
+				return false;
+			}
+			//判断图片张数，限制最多只能上传3张图片 
+			//console.log(picArray.length);
+			if(picArray.length>2){
+				alert("最多只能上传3张图片！"); 
+				return false;
+			}
+			//获取图片名字，如果验证通过了，那么显示图片名字    
+			//console.log(file.name);
+			$(e2).val(file.name);
+			//如果验证通过了，传到后台，并上传到服务器 ,并返回URL，进行显示 
+			var formDate=new FormData($(e3)[0]);
+			$.ajax({
+				url:domainUrl+"/background/news/img",
+				data:formDate,
+				type:"post",
+				enctype:'multipart/form-data',
+				timeout: 10000,  //1秒 
+				contentType: false,  //告诉jQuery不要去处理发送的数据
+		        processData: false,  //告诉jQuery不要去设置Content-Type请求头 
+				success:function(result){
+					if(result.code==100){
+						//获取图片url，添加到数组中 
+						var url=result.extend.msg;
+						picArray.push(url); 
+						//从数组中获取图片的url，动态及时显示上传的图片  
+						//$(e4).append("<img alt='' src='"+picArray[count]+"'/>");
+						if(picArray.length==1){
+							$("#img1").attr("src",picArray[0]);
+						}
+						if(picArray.length==2){
+							$("#img2").attr("src",picArray[1]);
+						}
+						if(picArray.length==3){
+							$("#img3").attr("src",picArray[2]);
+						}
+						//count++;
+					}else{
+						alert(result.extend.msg);
+					}
+					//为图片添加mouseover事件：必须有图片才触发事件 
+					if(picArray.length>0){
+						$(".pic_div").find("img").each(function(i,e){
+							$(e).on("mouseover" ,function(){
+								if(i==0 && $("#img1").attr("src")!=""){
+									$(".delete1").css({"display":"block"});
+								}
+								if(i==1 && $("#img2").attr("src")!=""){
+									$(".delete2").css({"display":"block"});
+								}
+								if(i==2 && $("#img3").attr("src")!=""){
+									$(".delete3").css({"display":"block"});
+								}
+							});
+						})
+					}	
+					//为第一个删除div添加mouseout事件 
+					$(".delete1").on({
+						mouseout:function(){
+							$(".delete1").css({"display":"none"});
+						}
+					});
+					//为第二个删除div添加mouseout事件 	
+					$(".delete2").on({
+						mouseout:function(){
+							$(".delete2").css({"display":"none"});
+						}
+					});
+					//为第三个删除div添加mouseout事件  
+					$(".delete3").on({
+						mouseout:function(){
+							$(".delete3").css({"display":"none"});
+						}
+					});
+				}
+			});
+			//var localUrl=window.URL.createObjectURL(file);  //存放在本地的位置：也就是浏览器缓存空间上  
+			//$("#ig1").attr("src",localUrl);
+			//$("#ig1").css("display","block");
+		});
+		//把图片数组返回给调用者  
+		return picArray;
+	}
+	
+	//上传
+	$(".ipt_btn").click(function(){
+		//上传前先判断 
+		var title=$("#title_ipt").val();
+		var type=$("#slct").val();
+		var status=$("#slct_sataus").val();
+		console.log(status);
+	    //1、判断新闻标题是否为空 
+	    var bool=isTitleEmpty();
+		if(bool==false){
+			return;
+		}
+		
+	    function isTitleEmpty(){
+			if(title==""){
+				$("#sp_msg").html("请输入新闻标题！");
+				$("#sp_msg").css("opacity","1");
+				return false;
+			}else{
+				$("#sp_msg").css("opacity","0");
+			}
+		}
+	    //2、判断新闻内容是否为空
+	   /*  var content=isContentEmpty();
+	    if(content==false){
+	    	return;
+	    } */
+	    function isContentEmpty(){
+		    var text = editor.$txt.text();
+		   // console.log(text.length);
+		    if(text.length<=6){
+		    	$("#sp_msg2").html("请输入新闻内容！");
+		    	$("#sp_msg2").css("opacity","1");
+		    	return false;
+		    }else{
+		    	$("#sp_msg2").css("opacity","0");
+		    }
+	    }
+	    
+	    var content=editor.$txt.html();
+	    
+	    //3、如果前面判空通过，那么发送ajax到后台，并接收返回信息 
+	    $.ajax({
+	    	url:domainUrl+"/news/add",
+	    	data:{"title":title,"type":type,"content":content,"imgSrc":arr+"","status":status}, 
+	    	type:"post",
+	    	success:function(result){
+	    		console.log(result);
+	    		//如果点击上传，返回添加成功，那么上传按钮禁止点击，图片删除按钮也解除点击绑定  
+	    		if(result.code==100){
+	    			$(".ipt_btn").attr("disabled","true");
+	    			$(".delete1 a").off();
+	    			$(".delete2 a").off();
+	    			$(".delete3 a").off();
+	    		}
+	    	}
+	    });    
+	});
+	
+});
+</script>
+</body>
+
+</html>

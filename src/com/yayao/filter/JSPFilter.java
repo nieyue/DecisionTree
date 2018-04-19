@@ -34,7 +34,24 @@ public class JSPFilter implements Filter {
 			 servletRequest.getRequestDispatcher(servletRequest.getContextPath()+"/404.html").forward(request, response);
 			  //servletResponse.sendRedirect(servletRequest.getContextPath()+"/404.html");
 		}else{
-			
+			//*.html;*.js;*.css;*.jpg;*.png;*.eot;*.svg;*.ttf;*.woff;*.woff2
+			if(path.indexOf(".html")>0
+					||path.indexOf(".js")>0
+					||path.indexOf(".css")>0
+					||path.indexOf(".jpg")>0
+					||path.indexOf(".png")>0
+					||path.indexOf(".eot")>0
+					||path.indexOf(".svg")>0
+					||path.indexOf(".ttf")>0
+					||path.indexOf(".woff")>0
+					||path.indexOf(".woff2")>0
+					)
+			{
+				servletRequest.getRequestDispatcher(path).forward(request, response);
+				//servletResponse.sendRedirect(path);
+				return;
+				
+			}
 			chain.doFilter(request,response);
 			
 		}

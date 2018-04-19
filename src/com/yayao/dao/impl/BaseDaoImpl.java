@@ -1,4 +1,4 @@
-package com.yayao.base;
+package com.yayao.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -16,13 +16,14 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.util.StringUtils;
 
-import com.yayao.bean.Account;
+import com.yayao.dao.BaseDao;
 /**
  * 基础数据访问接口实现类
+ * 定义为抽象类，不交由spring ioc管理,子类交由spring管理即可.
  * @author 聂跃
  * @date 2018年4月17日
  */
-public class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
+public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	@Resource
 	private SessionFactory sessionFactory;
 	public Session getSession() {
@@ -43,24 +44,23 @@ public class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	public boolean add(T t) {
 	 try{
 		 getSession().save(t);
-		 getSession().close();
+		// getSession().close();
 	     return true;
 	    }catch(Exception e){
-	     getSession().close();
+	     //getSession().close();
 	     return false;
 	    }
 	}
 
 	@Override
 	public boolean delete(Integer ID) {
-		@SuppressWarnings("unchecked")
-		T t = (T)getSession().get(Account.class, ID);
+		T t = (T)getSession().get(getT(), ID);
 		 try{
 			 getSession().delete(t);
-			 getSession().close();
+			 //getSession().close();
 		        return true;
 		    }catch(Exception e){
-		    	getSession().close();
+		    	//getSession().close();
 		        return false;
 		    }
 	}
@@ -69,10 +69,10 @@ public class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	public boolean update(T t) {
 		try{
 			 getSession().merge(t);
-			 getSession().close();
+			// getSession().close();
 		        return true;
 		    }catch(Exception e){
-		    	getSession().close();
+		    //	getSession().close();
 		        return false;
 		    }
 	}
@@ -140,11 +140,11 @@ public class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 		}
 		//行数
 		c.setProjection(Projections.rowCount()); 
-		return (int)c.uniqueResult();
+		return ((Long)c.uniqueResult()).intValue();
 	}
 
 	@Override
-	public List<T> browse(int pageNum, int pageSize, String orderName, String orderWay, Map<String, Object> eq,
+	public List<T> list(int pageNum, int pageSize, String orderName, String orderWay, Map<String, Object> eq,
 			Map<String, Object> gt, Map<String, Object> ge, Map<String, Object> lt, Map<String, Object> le,
 			Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in) {
 		Criteria c = getSession().createCriteria(getT());
@@ -207,7 +207,7 @@ public class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 		c.setMaxResults(pageSize);
 		}
 		//排序
-		if(orderWay.equals("desc")){
+		if(orderWay!=null&&orderWay.equals("desc")){
 			if(!StringUtils.isEmpty(orderName)){
 				c.addOrder(Order.desc(orderName));			
 			}
