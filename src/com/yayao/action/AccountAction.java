@@ -62,12 +62,12 @@ public class AccountAction extends BaseAction<Account,Integer>{
 		String shapwd = MyDESutil.getMD5(account.getPassword());
 		Account a=accountService.accountLogin(account.getPhone(),shapwd);
 		if(a==null){
-			map.put("data", a);
+			map.put("account", a);
 			result=ResultUtil.getSlefSRList("40000", "账户或密码错误", MyJSON.getJSONObject(map));
 			return ERROR;
 		}else{
 			session.put("account", a);
-			map.put("data", a);
+			map.put("account", a);
 			result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
 			return SUCCESS;
 		}
@@ -107,18 +107,36 @@ public class AccountAction extends BaseAction<Account,Integer>{
 		result=ResultUtil.getSlefSRFailList(MyJSON.getJSONObject(map));
 		return ERROR;
 	}
+	/**
+	 * 是否登录
+	 */
+	public String islogin(){
+		Map<String,Object>  session = ActionContextUtil.getSession();
+		Map<String,Object> map=new HashMap<String,Object>();
+		if(session.get("account")!=null) {
+			map.put("account", session.get("account"));
+			result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
+			return SUCCESS;
+		}
+		result=ResultUtil.getSlefSRFailList(MyJSON.getJSONObject(map));
+		return ERROR;
+	}
 
 	/**
 	 * 数量
 	 */
 	public String countAll()  {
-		return super.countAll(null, null, null, null, null, null, null, null);
+		Map<String, Object> eq=new HashMap<>();
+		eq.put("roleId", account.getRoleId());
+		return super.countAll(null, null, eq, null, null, null, null, null);
 	}
 	/**
 	 * 查询
 	 */
 	public String list()  {
-		return super.list(1, 10, null, null, null, null, null, null, null, null, null, null);
+		Map<String, Object> eq=new HashMap<>();
+		eq.put("roleId", account.getRoleId());
+		return super.list(1, 10, null, null, eq, null, null, null, null, null, null, null);
 	}
 	
 	/**

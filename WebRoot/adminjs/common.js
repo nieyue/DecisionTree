@@ -7,11 +7,11 @@ var newsUtils={
 			var domain={};
 			if(flag){
 		domain={
-				SevenSeconds:'localhost:8080'	
+				DecisionTree:'localhost:8080'	
 		};	
 			}else{
 		domain={
-				SevenSeconds:'localhost:8080'
+				DecisionTree:'localhost:8080'
 			};	
 			}
 			return domain;

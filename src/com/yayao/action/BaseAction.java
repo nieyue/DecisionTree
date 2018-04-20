@@ -1,6 +1,4 @@
 package com.yayao.action;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,17 +39,25 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 		this.result = result;
 	}
 
-
+	/**
+	 * 获取类型名。再首字母转小写
+	 */
+	String getName(T t){
+		String s=t.getClass().getSimpleName();
+		String s1 = s.substring(0, 1); 
+		 String s2 = s.substring(1); 
+		 String s3 = s1.toLowerCase();  
+		 String s4 = s3.concat(s2);  
+		return s4;
+	}
 	/**
 	 * 增加
 	 */
 	public String add(T t)  {
-		Map<String,Object> map=new HashMap<String,Object>();
-		List<T> list=new ArrayList<>();
+		Map<String,T> map=new HashMap<>();
 		boolean b=baseService.add(t);
 		if(b){
-			list.add(t);
-			map.put("data", list);
+			map.put(getName(t), t);
 			result=ResultUtil.getSlefSRSuccessList(
 					MyJSON.getJSONObject(map));
 			return SUCCESS;
@@ -64,12 +70,10 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 	* 更新
 	*/
 	public String update(T t)  {
-		Map<String,Object> map=new HashMap<String,Object>();
-		List<T> list=new ArrayList<>();
+		Map<String,T> map=new HashMap<>();
 		boolean b=baseService.update(t);
 		if(b){
-			list.add(t);
-			map.put("data", list);
+			map.put(getName(t), t);
 			result=ResultUtil.getSlefSRSuccessList(
 					MyJSON.getJSONObject(map));
 			return SUCCESS;
@@ -82,7 +86,7 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 	 * 删除
 	 */
 	public String delete(Integer ID)  {
-		Map<String,Object> map=new HashMap<String,Object>();
+		Map<String,T> map=new HashMap<>();
 		boolean b=baseService.delete(ID);
 		if(b){
 			result=ResultUtil.getSlefSRSuccessList(
@@ -97,12 +101,10 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 	*加载
 	*/
 	public String load(Integer id)  {
-		Map<String,Object> map=new HashMap<String,Object>();
-		List<T> list=new ArrayList<>();
+		Map<String,T> map=new HashMap<String,T>();
 		try {
 			T t=baseService.load(id);
-				list.add(t);
-				map.put("data", list);
+				map.put(getName(t), t);
 				result=ResultUtil.getSlefSRSuccessList(
 						MyJSON.getJSONObject(map));
 			return SUCCESS;
@@ -125,13 +127,11 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
 			Map<String,List<Object>> in)  {
-		Map<String,Object> map=new HashMap<String,Object>();
-		List<Integer> list=new ArrayList<>();
+		Map<String,Integer> map=new HashMap<>();
 		try {
 			
 			int number=baseService.countAll(eq, gt, ge, lt, le, between, like, in);
-			list.add(number);
-			map.put("data", list);
+			map.put("number", number);
 			result=ResultUtil.getSlefSRSuccessList(
 					MyJSON.getJSONObject(map));
 			return SUCCESS;
@@ -157,11 +157,10 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 			Map<String, List<Object>> between,
 			Map<String, Object> like,
 			Map<String, List<Object>> in)  {
-		Map<String,Object> map=new HashMap<String,Object>();
+		Map<String,List<T> > map=new HashMap<>();
 		try {
-			
 			List<T> rl=baseService.list(pageNum, pageSize, orderName, orderWay, eq, gt, ge, lt, le, between, like, in);
-			map.put("data", rl);
+			map.put("list", rl);
 			result=ResultUtil.getSlefSRSuccessList(
 					MyJSON.getJSONObject(map));
 			return SUCCESS;
