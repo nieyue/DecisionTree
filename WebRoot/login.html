@@ -104,11 +104,11 @@
 		<div class="connection_div">
 		</div>
 	</div>
-<script type="text/javascript" src="adminjs/jquery1.9.js"></script>
-<script type="text/javascript" src="adminjs/common.js"></script>
+<script type="text/javascript" src="resources/js/jquery1.9.js"></script>
+<script type="text/javascript" src="resources/js/base.js"></script>
 <script>
 	$(function(){
-		var domainUrl="http://"+newsUtils.domain().DecisionTree;
+		var domainUrl=myUtils.getDomain();
 		                                                             
 		$("#btn").click(function(){
 			if(show_hint()==false){

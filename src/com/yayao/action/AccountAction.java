@@ -128,7 +128,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	public String countAll()  {
 		Map<String, Object> eq=new HashMap<>();
 		eq.put("roleId", account.getRoleId());
-		return super.countAll(null, null, eq, null, null, null, null, null);
+		return super.countAll(eq, null, null, null, null, null, null, null);
 	}
 	/**
 	 * 查询
@@ -145,6 +145,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	public String add()  {
 		account.setCreateDate(new Date());
 		account.setLoginDate(new Date());
+		account.setPassword(MyDESutil.getMD5(account.getPassword()));
 		return super.add(account);
 	}
 	/**

@@ -44,23 +44,20 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	public boolean add(T t) {
 	 try{
 		 getSession().save(t);
-		// getSession().close();
 	     return true;
 	    }catch(Exception e){
-	     //getSession().close();
 	     return false;
 	    }
 	}
 
 	@Override
 	public boolean delete(Integer ID) {
+		@SuppressWarnings("unchecked")
 		T t = (T)getSession().get(getT(), ID);
 		 try{
 			 getSession().delete(t);
-			 //getSession().close();
 		        return true;
 		    }catch(Exception e){
-		    	//getSession().close();
 		        return false;
 		    }
 	}
@@ -69,10 +66,8 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	public boolean update(T t) {
 		try{
 			 getSession().merge(t);
-			// getSession().close();
 		        return true;
 		    }catch(Exception e){
-		    //	getSession().close();
 		        return false;
 		    }
 	}
@@ -93,49 +88,65 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 		//等于
 		if(MapUtils.isNotEmpty(eq)){
 			for (Map.Entry<String, Object> entry : eq.entrySet()) {
-				c.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+					c.add(Restrictions.eq(entry.getKey(), entry.getValue()));					
+				}
 			}
 		}
 		//大于
 		if(MapUtils.isNotEmpty(gt)){
 			for (Map.Entry<String, Object> entry : gt.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
 				c.add(Restrictions.gt(entry.getKey(), entry.getValue()));
+				}
 			}
 		}
 		//大于等于
 		if(MapUtils.isNotEmpty(ge)){
 			for (Map.Entry<String, Object> entry : ge.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
 				c.add(Restrictions.ge(entry.getKey(), entry.getValue()));
+				}
 			}
 		}
 		//小于
 		if(MapUtils.isNotEmpty(lt)){
 			for (Map.Entry<String, Object> entry : lt.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
 				c.add(Restrictions.lt(entry.getKey(), entry.getValue()));
+				}
 			}
 		}
 		//小于等于
 		if(MapUtils.isNotEmpty(le)){
 			for (Map.Entry<String, Object> entry : le.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
 				c.add(Restrictions.le(entry.getKey(), entry.getValue()));
+				}
 			}
 		}
 		//between
 		if(MapUtils.isNotEmpty(between)){
 			for (Map.Entry<String, List<Object>> entry : between.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue().get(0))&&!StringUtils.isEmpty(entry.getValue().get(1))){
 				c.add(Restrictions.between(entry.getKey(), entry.getValue().get(0),entry.getValue().get(1)));
+				}
 			}
 		}
 		//like模糊查询
 		if(MapUtils.isNotEmpty(like)){
 			for (Map.Entry<String, Object> entry : like.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
 				c.add(Restrictions.like(entry.getKey(), "%"+entry.getValue()+"%"));
+				}
 			}
 		}
 		//in 多个值里面
 		if(MapUtils.isNotEmpty(in)){
 			for (Map.Entry<String, List<Object>> entry : in.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
 				c.add(Restrictions.in(entry.getKey(), entry.getValue()));
+				}
 			}
 		}
 		//行数
@@ -150,53 +161,69 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 		Criteria c = getSession().createCriteria(getT());
 		//不为空，则遍历
 		//等于
-		if(MapUtils.isNotEmpty(eq)){
-			for (Map.Entry<String, Object> entry : eq.entrySet()) {
-				c.add(Restrictions.eq(entry.getKey(), entry.getValue()));
-			}
-		}
-		//大于
-		if(MapUtils.isNotEmpty(gt)){
-			for (Map.Entry<String, Object> entry : gt.entrySet()) {
-				c.add(Restrictions.gt(entry.getKey(), entry.getValue()));
-			}
-		}
-		//大于等于
-		if(MapUtils.isNotEmpty(ge)){
-			for (Map.Entry<String, Object> entry : ge.entrySet()) {
-				c.add(Restrictions.ge(entry.getKey(), entry.getValue()));
-			}
-		}
-		//小于
-		if(MapUtils.isNotEmpty(lt)){
-			for (Map.Entry<String, Object> entry : lt.entrySet()) {
-				c.add(Restrictions.lt(entry.getKey(), entry.getValue()));
-			}
-		}
-		//小于等于
-		if(MapUtils.isNotEmpty(le)){
-			for (Map.Entry<String, Object> entry : le.entrySet()) {
-				c.add(Restrictions.le(entry.getKey(), entry.getValue()));
-			}
-		}
-		//between
-		if(MapUtils.isNotEmpty(between)){
-			for (Map.Entry<String, List<Object>> entry : between.entrySet()) {
-				c.add(Restrictions.between(entry.getKey(), entry.getValue().get(0),entry.getValue().get(1)));
-			}
-		}
-		//like模糊查询
-		if(MapUtils.isNotEmpty(like)){
-			for (Map.Entry<String, Object> entry : like.entrySet()) {
-				c.add(Restrictions.like(entry.getKey(), "%"+entry.getValue()+"%"));
-			}
-		}
-		//in 多个值里面
-		if(MapUtils.isNotEmpty(in)){
-			for (Map.Entry<String, List<Object>> entry : in.entrySet()) {
-				c.add(Restrictions.in(entry.getKey(), entry.getValue()));
-			}
-		}
+				if(MapUtils.isNotEmpty(eq)){
+					for (Map.Entry<String, Object> entry : eq.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+							c.add(Restrictions.eq(entry.getKey(), entry.getValue()));					
+						}
+					}
+				}
+				//大于
+				if(MapUtils.isNotEmpty(gt)){
+					for (Map.Entry<String, Object> entry : gt.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+						c.add(Restrictions.gt(entry.getKey(), entry.getValue()));
+						}
+					}
+				}
+				//大于等于
+				if(MapUtils.isNotEmpty(ge)){
+					for (Map.Entry<String, Object> entry : ge.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+						c.add(Restrictions.ge(entry.getKey(), entry.getValue()));
+						}
+					}
+				}
+				//小于
+				if(MapUtils.isNotEmpty(lt)){
+					for (Map.Entry<String, Object> entry : lt.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+						c.add(Restrictions.lt(entry.getKey(), entry.getValue()));
+						}
+					}
+				}
+				//小于等于
+				if(MapUtils.isNotEmpty(le)){
+					for (Map.Entry<String, Object> entry : le.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+						c.add(Restrictions.le(entry.getKey(), entry.getValue()));
+						}
+					}
+				}
+				//between
+				if(MapUtils.isNotEmpty(between)){
+					for (Map.Entry<String, List<Object>> entry : between.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue().get(0))&&!StringUtils.isEmpty(entry.getValue().get(1))){
+						c.add(Restrictions.between(entry.getKey(), entry.getValue().get(0),entry.getValue().get(1)));
+						}
+					}
+				}
+				//like模糊查询
+				if(MapUtils.isNotEmpty(like)){
+					for (Map.Entry<String, Object> entry : like.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+						c.add(Restrictions.like(entry.getKey(), "%"+entry.getValue()+"%"));
+						}
+					}
+				}
+				//in 多个值里面
+				if(MapUtils.isNotEmpty(in)){
+					for (Map.Entry<String, List<Object>> entry : in.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+						c.add(Restrictions.in(entry.getKey(), entry.getValue()));
+						}
+					}
+				}
 		//分页
 		if(pageNum<=1){
 		 pageNum=1;//从第一个记录开始

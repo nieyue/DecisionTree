@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<constant name="" value=""></constant>
 <!--解决乱码    -->
     <constant name="struts.i18n.encoding" value="UTF-8" />
 <!-- 指定允许上传的文件最大字节数。默认值是2097152(2M) -->
@@ -13,7 +12,7 @@
  <constant name="struts.enable.DynamicMethodInvocation" value="true" />
 --> 
 	 <!-- 是否允许在OGNL表达式中调用静态方法，默认值为false -->  
-    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>  
+   <!--  <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>  --> 
 	  <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开
     <constant name="struts.action.extension" value="action,do,htm"/> 
 	   -->  
@@ -23,14 +22,38 @@
 	<!-- 取消struts2标签自带的样式 -->
 	    <constant name="struts.ui.theme" value="simple" />
        <constant name="struts.ui.templateDir" value="template" />
-       <constant name="struts.ui.templateSuffix" value="ftl" />  
+       <constant name="struts.ui.templateSuffix" value="ftl" /> 
        <!-- 页面 -->
-       <!-- <package name="html" namespace="/"  extends="struts-default">
-		<global-results>
-			<result name="login"  >/login.html</result>
-			<result name="index" >/index.html</result>
-		</global-results> 
-		</package> -->
+       <package name="struts-global" namespace="/" extends="json-default">
+	   <interceptors>
+           <interceptor name="myExceptionInterceptor"  class="com.yayao.interceptor.MyExceptionInterceptor"/>
+           <!-- 定义一个拦截器栈 -->
+           <interceptor-stack name="interceptor">
+              <interceptor-ref name="myExceptionInterceptor" />
+  			  <interceptor-ref name="defaultStack" />
+           </interceptor-stack>
+       </interceptors>
+         <default-interceptor-ref name="interceptor" />
+         <!-- 默认异常-->
+	       <global-results>
+				<result name="exception" type="chain">
+	                 <param name="actionName">exceptionAction</param>
+            	</result>
+			</global-results>
+	       <!-- 全局异常 --> 
+	       <global-exception-mappings>
+	            <exception-mapping 
+		            exception="java.lang.Exception" 
+		            result="exception">
+	            </exception-mapping>
+	        </global-exception-mappings>
+	        <!-- 返回错误action -->
+	        <action name="exceptionAction" class="com.yayao.action.ExceptionAction" >
+                <result name="success"  type="json">
+					<param  name="root">result</param>
+				</result> 
+         	</action>
+		</package>
 	 <!-- 工具包 -->
 	<package name="tool" namespace="/tool"  extends="json-default">
 	 <!-- 验证码 -->
@@ -50,6 +73,10 @@
 			<result name="error" type="json">
 				<param  name="root">result</param>
 			</result>
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">exceptionAction</param>
+			</result>
 		</action>
 	</package>
 	<!-- 账户-->
@@ -60,6 +87,10 @@
 			</result>
 			<result name="error" type="json">
 				<param  name="root">result</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">exceptionAction</param>
 			</result>
 		</action>
 	</package>

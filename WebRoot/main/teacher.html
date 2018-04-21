@@ -4,7 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">教师列表</label>
 </div>
 <div style="margin:10px;">
-<button class="btn btn-primary" onclick="addClick()">添加教师</button>
+<button class="btn btn-primary" onclick="business.addClick('添加教师','#teacherAdd')">添加教师</button>
 </div>
 <!-- 教师列表选择end -->
 <!-- 教师列表 -->
@@ -47,130 +47,93 @@
 
 <!-- add -->
 <div id="teacherAdd" style="display:none">
-<label  class="text-danger">※昵称</label>
+<label  class="text-danger">※姓名</label>
   <div class=" comment-input-margin">
-    <input type="text" class=" comment-input"  name="nickname"  placeholder="2-16位">
+    <input type="text" class=" comment-input"  id="realname"  placeholder="2-16位">
   </div>
-  <label class="text-danger" >※合伙人收益比例（必填）</label>
+  <label class="text-danger" >※手机号</label>
   <div class="comment-input-margin ">
-    <input type="text" class="comment-input"  name="scale"  placeholder="0-1之间两位小数" >
+    <input type="text" class="comment-input"  id="phone"  placeholder="11位" >
   </div>
-    <label  class="text-danger">真实姓名</label>
+    <label  class="text-danger">※密码</label>
   <div class=" comment-input-margin">
-    <input type="text" class=" comment-input"  name="realname"   placeholder="2-16位">
-    
+    <input type="text" class=" comment-input"  name="password"   placeholder="6-16位">
+  </div>
+  <div class=" comment-input-margin" >
+    <button type="button" class="btn btn-primary" id="teacherAddSubmit" >确定</button>
   </div>
 </div>
 <!-- add end-->
 </div>
 <script>
- 	//分页初始化
-	 var  params={
-	      startNum:1,//初始化个数
-	      currentPage:1,//当前页
-	      pageNum:1,//获取的第几个开始
-	      pageSize:10,//每页的个数
-	      total:0//总数
-  	};
-  	function initPage(){
-	var result={
-		currentPage:params.currentPage,//当前页
-		pageSize:params.pageSize,//每页条数
-		totalPage:(params.total)%(params.pageSize)==0?(params.total)/(params.pageSize):parseInt((params.total)/(params.pageSize))+1,//总页数
-		total:params.total//总条数
+ 
+  	//请求参数分角色
+  	for(var i=0;i<business.roleList.length;i++){
+		if(business.roleList[i].name=='教师'){
+				business.params.roleId=business.roleList[i].roleId;
+		}
 	}
-	showPage(result);
-  	}
-  	//请求参数
-			console.log(roleList)
-  	for(var i=0;i<roleList.length;i++){
-				if(roleList[i].name=='教师'){
-  				params.roleId=roleList[i].roleId;
-				}
-			}
-	getList(params);
-	
-	function getList(params){
-	$.ajax({
-			url:domainUrl+"/account/countAll",
-			type:"post",
-			data:params,
-			success:function(data){
-			if(data.code==200){
-				$.ajax({
-					url:domainUrl+"/account/list",
-					data:params,
-					type:"post",
-					success:function(result){
-						if(result.code==200){
-						var accountList=result.data.list;
-						params.total=result.data.list.length;
-						var tableTbody="<div class='text-center'>暂无数据</div>";
-						if(accountList.length<=0){
-						$("table").after(tableTbody);
-						return;
-						}
-						for(var i=0;i<accountList.length;i++){
-							tableTbody+="<tr>"+
-										  "<td>"+
-										      "<span>"+(i+(params.currentPage-1)*params.pageSize+params.startNum)+"</span>"+
-										  "</td>"+
-										  "<td>"+
-										      "<span>"+accountList[i].accountId+"</span>"+
-										  "</td>"+
-										  "<td>"+
-										      "<span>"+accountList[i].realname+"</span>"+
-										  "</td>"+
-										  "<td>"+
-										      "<span>"+accountList[i].phone+"</span>"+
-										  "</td>"+
-										  "<td>"+
-										      "<span>"+accountList[i].createDate+"</span>"+
-										  "</td>"+
-										  "<td>"+
-										      "<span>"+accountList[i].loginDate+"</span>"+
-										  "</td>"+
-										  "<td>"+
-										      "<button class='btn btn-warning'>修改</span>"+
-										  "</td>"+
-										"</tr>";
-						}
-						//表格数据
-						$("#tableTbody").html(tableTbody);
-						initPage();
-						}else{
-							myUtils.myLoadingToast("暂无数据")
-						}
-					}	
-				});
-			}
-			}
-			});
+	//初始化列表
+	business.slef.getList=function(){
+	business.getList({
+       countUrl:'/account/countAll',
+       listUrl:'/account/list',
+       data:'accountList',
+       success:function(){
+       var tableTbody="";
+       for(var i=0;i<business.accountList.length;i++){
+			tableTbody+="<tr>"+
+						  "<td>"+
+						      "<span>"+(i+(business.params.currentPage-1)*business.params.pageSize+business.params.startNum)+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.accountList[i].accountId+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.accountList[i].realname+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.accountList[i].phone+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.accountList[i].createDate+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.accountList[i].loginDate+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<button class='btn btn-warning'>修改</span>"+
+						  "</td>"+
+						"</tr>";
+		}
+		//表格数据
+		$("#tableTbody").html(tableTbody);
+		business.initPage(business.params);
+		     }
+     },business.params);
 	}
-	//点击添加
-	function addClick(){
-	$("#mySellerModal").click();
-	$("#mySellerModalLabel").text("增加教师");
-	$("#mySellerModalBody").html($("#teacherAdd"))
-	$("#teacherAdd").show();
-	}
-	//表单提交
-	$("#sellerSubmit").click(function(){
-	
+	business.slef.getList();
+	/**
+     * 增加
+     * p.addUrl 增加url
+     * p.requestObject 请求参数对象
+     * p.success 成功回调
+     */
+	$(document).on("click","#teacherAddSubmit",function(){
+	business.addAccount={
+	realname:$("#realname").val(),
+	phone:$("#phone").val(),
+	password:$("#password").val(),
+	roleId:business.params.roleId
+	};
+	business.add({
+		url:'/account/add',
+		requestObject:'addAccount',
+		success:function(){
+		 $("#closeModal").click();
+		 business.slef.getList();
+		}
 	});
-	//添加
-	function add(addAccount){
-	$.ajax({
-			url:domainUrl+"/account/add",
-			type:"post",
-			data:addAccount,
-			success:function(data){
-			if(data.code==200){
-				myUtils.myLoadingToast("添加成功")
-			}
-			
-			}
-			});
-	}
-	
+	});
+
 </script>

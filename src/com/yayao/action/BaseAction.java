@@ -130,8 +130,8 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 		Map<String,Integer> map=new HashMap<>();
 		try {
 			
-			int number=baseService.countAll(eq, gt, ge, lt, le, between, like, in);
-			map.put("number", number);
+			int total=baseService.countAll(eq, gt, ge, lt, le, between, like, in);
+			map.put("total", total);
 			result=ResultUtil.getSlefSRSuccessList(
 					MyJSON.getJSONObject(map));
 			return SUCCESS;

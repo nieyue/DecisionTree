@@ -169,57 +169,8 @@
 	.page_label{
 	}
 </style>
-<script type="text/javascript" src="adminjs/jquery1.9.js"></script>
-<script type="text/javascript" src="resources/js/bootstrap3.2.0.js"></script>
-<script src="resources/js/metisMenu.min.js"></script>
-<script type="text/javascript" src="adminjs/common.js"></script>
-<script type="text/javascript" src="resources/js/base.js"></script>
-<script>
-var domainUrl="http://"+newsUtils.domain().DecisionTree;
-	//验证是否已经登录 
-	var accountId;
-	var phone;
-	var roleId;
-	var role;
-	function initIslogin(){
-	$.ajax({
-		url:domainUrl+"/account/islogin",
-		type:"get",
-		success:function(data){
-			console.log(data);
-			if(data.code==200){
-			phone=data.data.account.phone;
-			accountId=data.data.account.accountId;
-			roleId=data.data.account.roleId;
-			$(".name_top a").html(phone);
-			}else{
-				location.replace(domainUrl+"/login.html");
-			}
-		}	
-	});
-	}
-	initIslogin();
-	var roleList=[];
-	function initRoleList(){
-	$.ajax({
-		url:domainUrl+"/role/list",
-		type:"get",
-		async:false,
-		success:function(data){
-			if(data.code==200){
-			 roleList=data.data.list;
-			for(var i=0;i<roleList.length;i++){
-				if(roleList[i].roleId==roleId){
-				role=roleList[i];
-				$(".role_name").text(role.name);
-				}
-			}
-			}
-		}	
-	});
-	}
-	initRoleList();
-</script>	
+
+
 </head>
 <body>
 	<div class="wrap">
@@ -229,7 +180,7 @@ var domainUrl="http://"+newsUtils.domain().DecisionTree;
 			</div>
 			<div class="cls_top">
 				<div class="name_top"><a href="javascript:;"></a></div>
-				<div class="exit_top"><a href="javascript:;">退出</a></div>
+				<div class="exit_top"><a href="javascript:;" onclick="business.loginout()">退出</a></div>
 			</div>
 		</div>
 		<!-- 左边导航 -->
@@ -238,7 +189,7 @@ var domainUrl="http://"+newsUtils.domain().DecisionTree;
 				<nav class="sidebar-nav" style="background-image:linear-gradient(to right,#ccc 0, #000 0 )">
 					<ul id="leftBar">
 						<li>
-							<a onclick="clickLeftMenu('index')">
+							<a onclick="business.clickLeftMenu('index')">
 								<span class="glyphicon glyphicon-home"></span>
 								<span >首页</span>
 							</a>
@@ -257,8 +208,8 @@ var domainUrl="http://"+newsUtils.domain().DecisionTree;
 										<span class="glyphicon arrow"></span>
 									</a>
 									<ul>
-										<li><a class="text-center" onclick="clickLeftMenu('teacher')">老师管理</a></li>
-										<li><a class="text-center" onclick="clickLeftMenu('student')">学生管理</a></li>
+										<li><a class="text-center" onclick="business.clickLeftMenu('teacher')">老师管理</a></li>
+										<li><a class="text-center" onclick="business.clickLeftMenu('student')">学生管理</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -300,153 +251,23 @@ var domainUrl="http://"+newsUtils.domain().DecisionTree;
 		         </div>
 		         <div class="modal-body" id="mySellerModalBody">
 		         </div>
-		         <div class="modal-footer">
+		        <!--  <div class="modal-footer">
 		         	<div id="errorSellerInfo" class="text-justify text-danger"></div>
 		            <button type="button" class="btn btn-primary" id="sellerSubmit">
 		              	 提交
 		            </button>
-		         </div>
+		         </div> -->
 		      </div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 	</div>
-	
+	<script type="text/javascript" src="resources/js/jquery1.9.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap3.2.0.js"></script>
+<script src="resources/js/metisMenu.min.js"></script>
+<script type="text/javascript" src="resources/js/base.js"></script>
+<script type="text/javascript" src="business.js"></script>
 <script>
-	 //点击左边导航
-	 function clickLeftMenu(item){
-	 	$(".content_main").load(domainUrl+"/main/"+item+".html"); 
-	 }
-	 //分页初始化
-	/*  var  params={
-	      startNum:1,//初始化个数
-	      currentPage:1,//当前页
-	      pageNum:1,//获取的第几个开始
-	      pageSize:10,//每页的个数
-	      total:100//总数
-  	};
-	var result={
-		currentPage:params.currentPage,//当前页
-		pageSize:params.pageSize,//每页条数
-		totalPage:(params.total)%(params.pageSize)==0?(params.total)/(params.pageSize):parseInt((params.total)/(params.pageSize))+1,//总页数
-		total:params.total//总条数
-	}
-	showPage(result); */
-	//分页条信息
-	function showPage(result){
-		$(".page_font").empty();
-		var totalPage=result.totalPage;
-		var nowPage=result.currentPage;
-		var pageSize=result.pageSize;
-		var totalSize=result.total;
-		//var pagination=result.pagination;
-		var pagination=[];
-		
-		//console.log(myUtils.myPaginationHandler)
-		pagination=myUtils.myPaginationHandler().getShowPageNumber(totalPage,params.pageNum,5,nowPage)
-		//显示分页文字信息 
-		$(".page_font").append("总共"
-				+totalPage+"页，当前第"
-				+nowPage+"页，每页"
-				+pageSize+"条数据，总共"
-				+totalSize+"条数据");
-		
-	    //显示分页条信息	
-	    $("#di ul").empty();
-	    var firstPage=$("<li></li>").append("<a href='#' aria-label='Previous'><span aria-hidden='true'>首页</span>");
-	    var lastPage=$("<li></li>").append("<a href='#' aria-label='Previous'><span aria-hidden='true'>尾页</span>");
-	    
-	    var previousPage=$("<li></li>").append("<a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span>");
-		var nextPage=$("<li></li>").append("<a href='#' aria-label='Previous'><span aria-hidden='true'>&raquo;</span>");
-		
-		//添加首页、上一页 
-		$("#di ul").append(firstPage)
-  		   		   .append(previousPage)
-  		//设置如果是第一页：那么首页和上一页不可点击，最后一页：那么尾页和下一页不可点击 	
-   		if(nowPage==1){
-			firstPage.addClass("disabled");
-			previousPage.addClass("disabled");
-		}   
 
-		if(nowPage==totalPage){
-			nextPage.addClass("disabled");
-			lastPage.addClass("disabled");
-		}   		   
-  		//为首页，上一页，下一页，尾页 添加点击事件  
-				firstPage.click(function(){
-					if(nowPage!=1){
-						toPage(1);
-					}
-				});
-				previousPage.click(function(){
-					if(nowPage-1>0){
-						toPage(nowPage-1);
-					}
-				});
-				nextPage.click(function(){
-					if(nowPage+1<=totalPage){
-						toPage(nowPage+1);
-					}
-				});
-				lastPage.click(function(){
-					if(nowPage!=totalPage){
-						toPage(totalPage);
-					}
-				});
-	    //获取每页显示的页码 
-  		$.each(pagination,function(i,e){
-  			var pages=$("<li></li>").append("<a href='#'>"+e+"</a>");
-  			$("#di ul").append(pages);
-  			if(nowPage==e){
-  				pages.addClass("active");
-  			}
-  			pages.click(function(){
-				toPage(e);
-			}); 
-  		});  
-  		   		   
-   		$("#di ul").append(nextPage)
-		   		   .append(lastPage); 	
-	}
-	//分页页面跳转
-	function toPage(currentPage){
-	result.currentPage=currentPage;
-	params.pageNum=(params.currentPage-1)*params.pageSize+params.startNum;;
-	showPage(result);
-	}	
-	$(function(){
-	//初始化左边导航
-	 $('#leftBar').metisMenu();
-	//首页初始化
-	clickLeftMenu('index');	
-		
-		//退出 
-		$(".exit_top a").click(function(){
-			//console.log(userId);
-			$(".hid_div").css("display","block");
-			$(".hid_main").css("display","block");
-			$("#sure").click(function(){
-				/* $(".hid_div").css("display","none");
-				$(".hid_main").css("display","none"); */
-				$.ajax({
-					url:domainUrl+"/account/loginout",
-					data:{"accountId":accountId},
-					type:"get",
-					success:function(result){
-						//console.log(result);
-						if(result.code==200){
-							location.replace(domainUrl+"/login.html");
-						}	
-					}
-				});
-			});
-			$("#off").click(function(){
-				$(".hid_div").css("display","none");
-				$(".hid_main").css("display","none");
-			});
-		});
-		
-		
-	});
 	
 </script>	
 </body>
