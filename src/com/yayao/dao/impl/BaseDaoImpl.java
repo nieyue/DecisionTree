@@ -227,12 +227,12 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 		//分页
 		if(pageNum<=1){
 		 pageNum=1;//从第一个记录开始
-		 c.setFirstResult(pageNum-1);
 		}
+		c.setFirstResult(pageNum-1);
 		if(pageSize<=0){
 		pageSize=0;//最少0个返回值
-		c.setMaxResults(pageSize);
 		}
+		c.setMaxResults(pageSize);
 		//排序
 		if(orderWay!=null&&orderWay.equals("desc")){
 			if(!StringUtils.isEmpty(orderName)){

@@ -1,10 +1,10 @@
 # 数据库 
 #创建数据库
-DROP DATABASE IF EXISTS activation_code_mall_db;
-CREATE DATABASE activation_code_mall_db;
+DROP DATABASE IF EXISTS decision_tree_db;
+CREATE DATABASE decision_tree_db;
 
 #使用数据库 
-use activation_code_mall_db;
+use decision_tree_db;
 
 #设置初始角色
 INSERT  INTO role_tb (name,duty,update_date) 

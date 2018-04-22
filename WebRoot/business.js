@@ -66,7 +66,7 @@ business={
 	 },
 	 
 	 //分页条信息
-	showPage:function(params){
+	showPage:function(params,list){
 		 $(".page_font").empty();
 			var totalPage=params.totalPage;
 			var nowPage=params.currentPage;
@@ -106,22 +106,22 @@ business={
 	 		//为首页，上一页，下一页，尾页 添加点击事件  
 					firstPage.click(function(){
 						if(nowPage!=1){
-							business.toPage(1);
+							business.toPage(1,list);
 						}
 					});
 					previousPage.click(function(){
 						if(nowPage-1>0){
-							business.toPage(nowPage-1);
+							business.toPage(nowPage-1,list);
 						}
 					});
 					nextPage.click(function(){
 						if(nowPage+1<=totalPage){
-							business.toPage(nowPage+1);
+							business.toPage(nowPage+1,list);
 						}
 					});
 					lastPage.click(function(){
 						if(nowPage!=totalPage){
-							business.toPage(totalPage);
+							business.toPage(totalPage,list);
 						}
 					});
 		    //获取每页显示的页码 
@@ -132,7 +132,7 @@ business={
 	 				pages.addClass("active");
 	 			}
 	 			pages.click(function(){
-	 				business.toPage(e);
+	 				business.toPage(e,list);
 				}); 
 	 		});  
 	 		   		   
@@ -140,15 +140,30 @@ business={
 			   		   .append(lastPage); 	
 	 },
 	 //初始化分页
-	 initPage:function (params){
-		params.totalPage=(params.total)%(params.pageSize)==0?(params.total)/(params.pageSize):parseInt((params.total)/(params.pageSize))+1,//总页数
-		business.showPage(params);
+	 initPage:function (list){
+		 //初始化参数初始化，防止不同数据混淆
+		 business.params={
+		      startNum:1,//初始化个数
+		      currentPage:1,//当前页
+		      pageNum:1,//获取的第几个开始
+		      pageSize:10,//每页的个数
+		      total:0//总数
+		 },
+		 //显示数据后获取总页数
+		list(function(){
+			business.params.totalPage=(business.params.total)%(business.params.pageSize)==0?(business.params.total)/(business.params.pageSize):parseInt((business.params.total)/(business.params.pageSize))+1,//总页数
+			business.showPage(business.params,list);			
+		})
 	},
 	//分页页面跳转
-	toPage:function(currentPage){
+	toPage:function(currentPage,list){
+		//获取当前页
 		business.params.currentPage=currentPage;
+		//获取当前数
 		business.params.pageNum=(business.params.currentPage-1)*business.params.pageSize+business.params.startNum;
-		business.showPage(business.params);
+		list(function(){
+		business.showPage(business.params,list);
+		})
 	},	
 	 //退出 
 	 loginout:function(){

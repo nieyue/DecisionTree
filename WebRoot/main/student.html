@@ -65,14 +65,14 @@
 <!-- add end-->
 </div>
 <script>
+//初始化列表
+	business.slef.getList=function(callback){
   	//请求参数分角色
  	for(var i=0;i<business.roleList.length;i++){
 			if(business.roleList[i].name=='学生'){
  				business.params.roleId=business.roleList[i].roleId;
 			}
 	}
-//初始化列表
-	business.slef.getList=function(){
 	business.getList({
        countUrl:'/account/countAll',
        listUrl:'/account/list',
@@ -106,18 +106,21 @@
 		}
 		//表格数据
 		$("#tableTbody").html(tableTbody);
-		business.initPage(business.params);
+		//回调
+		callback();
        }
      },business.params);
      }
-	business.slef.getList();
+	//初始化
+	business.initPage(business.slef.getList);
 		/**
      * 增加
      * p.addUrl 增加url
      * p.requestObject 请求参数对象
      * p.success 成功回调
      */
-    $(document).on("click","#studentAddSubmit",function(){
+    $(document).off("click","#studentAddSubmit");
+	$(document).on("click","#studentAddSubmit",function(){
 	business.addAccount={
 	realname:$("#realname").val(),
 	phone:$("#phone").val(),

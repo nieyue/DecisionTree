@@ -1,5 +1,4 @@
 package com.yayao.action;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,36 @@ public abstract class BaseAction<T,ID> extends ActionSupport implements ModelDri
 	@Autowired
 	protected BaseService<T,ID> baseService;
 	protected StateResultList<JSONObject> result;//返回数据
+	protected int pageNum;	//当前数 
+	protected int pageSize;	//每页个数
+	protected String orderName;	//排序名称
+	protected String orderWay;	//desc降序，asc升序
+	
+	
+	public int getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	public String getOrderName() {
+		return orderName;
+	}
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
+	}
+	public String getOrderWay() {
+		return orderWay;
+	}
+	public void setOrderWay(String orderWay) {
+		this.orderWay = orderWay;
+	}
 	public StateResultList<JSONObject> getResult() {
 		return result;
 	}

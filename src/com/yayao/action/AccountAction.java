@@ -30,17 +30,9 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	@Resource
 	private AccountService accountService;
 
-	private String validate;	//验证码
+	private String validate;	//验证码 
 	private Account account=new Account();
-	
-	
 
-	/*public Account getAccount() {
-		return account;
-	}
-	public void setAccount(Account account) {
-		this.account = account;
-	}*/
 	public String getValidate() {
 		return validate;
 	}
@@ -136,7 +128,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	public String list()  {
 		Map<String, Object> eq=new HashMap<>();
 		eq.put("roleId", account.getRoleId());
-		return super.list(1, 10, null, null, eq, null, null, null, null, null, null, null);
+		return super.list(super.pageNum, super.pageSize, super.orderName, super.orderWay, eq, null, null, null, null, null, null, null);
 	}
 	
 	/**

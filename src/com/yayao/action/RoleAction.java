@@ -71,7 +71,7 @@ public class RoleAction extends BaseAction<Role,Integer>{
 	 * 查询
 	 */
 	public String list()  {
-		return super.list(1, 10, null, null, null, null, null, null, null, null, null, null);
+		return super.list(super.pageNum, super.pageSize, super.orderName, super.orderWay, null, null, null, null, null, null, null, null);
 	}
 
 	
