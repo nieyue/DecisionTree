@@ -1,21 +1,21 @@
 <div class="right-body">
-<!-- 成绩列表选择 -->
+<!-- 教师课程列表选择 -->
 <div style="margin:10px;">
-<label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">成绩列表</label>
+<label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">教师课程列表</label>
 </div>
 <div style="margin:10px;">
-<button class="btn btn-primary" onclick="business.self.addClick()">添加成绩</button>
+<button class="btn btn-primary" onclick="business.self.addClick()">添加教师课程</button>
 </div>
-<!-- 成绩列表选择end -->
-<!-- 成绩列表 -->
+<!-- 教师课程列表选择end -->
+<!-- 教师课程列表 -->
 		<div style="width:100%" class="tableWrap">
 			<table class="table table-bordered" style="width:100%">
 				<!--表格头-->
     			<thead>
 					<tr>
 					  <th>序号</th>
-					  <th>成绩id</th>
-					  <th>成绩</th>
+					  <th>教师课程id</th>
+					  <th>教师课程</th>
 					  <th>学生账户</th>
 					  <th>更新时间</th>
 					  <th >操作</th> 
@@ -26,7 +26,7 @@
 				</tbody>
 			</table>
 		</div>
-<!-- 成绩列表end -->
+<!-- 教师课程列表end -->
 	<!-- 页面列表end -->
 
 
@@ -45,8 +45,8 @@
 <!--分页 end -->
 
 <!-- add -->
-<div id="scoreAddWrap" style="display:none">
-	<div id="scoreAdd" >
+<div id="teacherCourseAddWrap" style="display:none">
+	<div id="teacherCourseAdd" >
 	<label  class="text-danger">※名称</label>
 	  <div class=" comment-input-margin">
 	    <input type="text" class=" comment-input"  id="nameAdd"  placeholder="2-16位">
@@ -56,14 +56,14 @@
 	    <textarea  class="comment-input"  id="dutyAdd"  placeholder="255位" ></textarea>
 	  </div>
 	  <div class=" comment-input-margin" >
-	    <button type="button" class="btn btn-primary" id="scoreAddSubmit" >确定</button>
+	    <button type="button" class="btn btn-primary" id="teacherCourseAddSubmit" >确定</button>
 	  </div>
 	</div>
 </div>
 <!-- add end-->
 <!-- update -->
-<div id="scoreUpdateWrap" style="display:none">
-	<div id="scoreUpdate">
+<div id="teacherCourseUpdateWrap" style="display:none">
+	<div id="teacherCourseUpdate">
 	<label  class="text-danger">※名称</label>
 	  <div class=" comment-input-margin">
 	    <input type="text" class=" comment-input"  id="nameUpdate"  placeholder="2-16位">
@@ -73,7 +73,7 @@
 	    <textarea  class="comment-input"  id="dutyUpdate"  placeholder="255位" ></textarea>
 	  </div>
 	  <div class=" comment-input-margin" >
-	    <button type="button" class="btn btn-primary" id="scoreUpdateSubmit" >确定</button>
+	    <button type="button" class="btn btn-primary" id="teacherCourseUpdateSubmit" >确定</button>
 	  </div>
 	</div>
 </div>
@@ -84,31 +84,31 @@
 	//初始化列表
 	business.self.getList=function(callback){
 	business.getList({
-       countUrl:'/score/countAll',
-       listUrl:'/score/list',
-       data:'scoreList',
+       countUrl:'/teacherCourse/countAll',
+       listUrl:'/teacherCourse/list',
+       data:'teacherCourseList',
        success:function(){
        var tableTbody="";
-       for(var i=0;i<business.scoreList.length;i++){
+       for(var i=0;i<business.teacherCourseList.length;i++){
 			tableTbody+="<tr>"+
 						  "<td>"+
 						      "<span>"+(i+(business.params.currentPage-1)*business.params.pageSize+business.params.startNum)+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.scoreList[i].scoreId+"</span>"+
+						      "<span>"+business.teacherCourseList[i].teacherCourseId+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.scoreList[i].name+"</span>"+
+						      "<span>"+business.teacherCourseList[i].name+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.scoreList[i].duty+"</span>"+
+						      "<span>"+business.teacherCourseList[i].duty+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.scoreList[i].updateDate+"</span>"+
+						      "<span>"+business.teacherCourseList[i].updateDate+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<button class='btn btn-warning' onclick='business.self.updateClick("+ JSON.stringify(business.scoreList[i])+")'>修改</span>"+
-						      "<button class='btn btn-danger' onclick='business.self.deleteClick("+business.scoreList[i].scoreId+")'>删除</span>"+
+						      "<button class='btn btn-warning' onclick='business.self.updateClick("+ JSON.stringify(business.teacherCourseList[i])+")'>修改</span>"+
+						      "<button class='btn btn-danger' onclick='business.self.deleteClick("+business.teacherCourseList[i].teacherCourseId+")'>删除</span>"+
 						  "</td>"+
 						"</tr>";
 		}
@@ -129,16 +129,16 @@
      */
      business.self.addClick=function(){
      //显示model
-	 business.self.showModel('添加成绩','#scoreAddWrap','#scoreAdd');
-	    $(document).off("click","#scoreAddSubmit");
-		$(document).on("click","#scoreAddSubmit",function(){
-		business.addscore={
+	 business.self.showModel('添加教师课程','#teacherCourseAddWrap','#teacherCourseAdd');
+	    $(document).off("click","#teacherCourseAddSubmit");
+		$(document).on("click","#teacherCourseAddSubmit",function(){
+		business.addteacherCourse={
 		name:$("#nameAdd").val(),
 		duty:$("#dutyAdd").val()
 		};
 		business.add({
-			url:'/score/add',
-			requestObject:'addScore',
+			url:'/teacherCourse/add',
+			requestObject:'addTeacherCourse',
 			success:function(){
 			 $("#closeModal").click();
 			 //初始化
@@ -153,21 +153,21 @@
      * p.requestObject 请求参数对象
      * p.success 成功回调
      */
-	business.self.updateClick=function(score){
+	business.self.updateClick=function(teacherCourse){
 	//显示model
-	 business.self.showModel('修改成绩','#scoreUpdateWrap','#scoreUpdate');
+	 business.self.showModel('修改教师课程','#teacherCourseUpdateWrap','#teacherCourseUpdate');
 	 //放置对象
-	 $("#nameUpdate").val(score.name)
-	 $("#dutyUpdate").val(score.duty)
+	 $("#nameUpdate").val(teacherCourse.name)
+	 $("#dutyUpdate").val(teacherCourse.duty)
 	 //绑定
-	$(document).off("click","#scoreUpdateSubmit");
-	$(document).on("click","#scoreUpdateSubmit",function(){
-	business.updateScore=score;//复制
-	business.updateScore.realname=$("#nameUpdate").val(),
-	business.updateScore.phone=$("#dutyUpdate").val(),
+	$(document).off("click","#teacherCourseUpdateSubmit");
+	$(document).on("click","#teacherCourseUpdateSubmit",function(){
+	business.updateteacherCourse=teacherCourse;//复制
+	business.updateteacherCourse.realname=$("#nameUpdate").val(),
+	business.updateteacherCourse.phone=$("#dutyUpdate").val(),
 	 business.update({
-      url:"/score/update",
-      requestObject:'updateScore',
+      url:"/teacherCourse/update",
+      requestObject:'updateTeacherCourse',
       success:function(){
       $("#closeModal").click();
       //初始化
@@ -182,13 +182,13 @@
      * p.requestObject 请求参数对象
      * p.success 成功回调
      */
-     business.self.deleteClick=function(scoreId){
-     business.deleteScore={
-		scoreId:scoreId
+     business.self.deleteClick=function(teacherCourseId){
+     business.deleteTeacherCourse={
+		teacherCourseId:teacherCourseId
 	 };
       business.delete({
-      url:"/score/delete",
-      requestObject:'deleteScore',
+      url:"/teacherCourse/delete",
+      requestObject:'deleteTeacherCourse',
       success:function(){
       //初始化
 	business.initPage(business.self.getList);
