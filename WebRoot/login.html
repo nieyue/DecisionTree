@@ -43,11 +43,13 @@
 	.log_content{
 		position:absolute;
 	    width: 300px;
-	    height: 320px;
+	    height: 300px;
 	    text-align: center;
 	    left: 50%;
 	    margin-left: -150px;
 	    top: 13%;
+	    border-radius:3px;
+	    box-shadow:0 0 5px #fff;
 	    /* border: 1px solid #ececec; */
 	    background-color: white;
 	}
@@ -64,11 +66,11 @@
 	}
 	.log_content input{
 		position: relative;
-	    width: 220px;
+	    top: 50;
+	    width: 268px;
 	    padding: 10px 10px;
 	    margin: 10px;
 	    /* margin-top: 25px; */
-	    top: 50;
 	}
 	.hint_div{
 	    position: relative;
@@ -122,8 +124,6 @@
 					console.log(result);
 					if(result.code==200){
 						$(".hint_div").html("登录成功"); 
-						//window.location.href ="../yiliaoqixie/login.html?name="+$nameEle.val();
-						//window.location.href=url+"/background/newsAdd.html;
 						location.replace("/main.html");
 					}else{
 						$(".hint_div").html("账号或者密码错误"); 

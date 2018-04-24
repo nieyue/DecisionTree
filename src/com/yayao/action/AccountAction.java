@@ -1,6 +1,7 @@
 package com.yayao.action;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -110,7 +111,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 			result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
 			return SUCCESS;
 		}
-		result=ResultUtil.getSlefSRFailList(MyJSON.getJSONObject(map));
+		result=ResultUtil.getSlefSRList("50000", "账户未登录", MyJSON.getJSONObject(map));
 		return ERROR;
 	}
 
@@ -135,6 +136,16 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	 * 增加
 	 */
 	public String add()  {
+		Map<String, Object> eq=new HashMap<>();
+		eq.put("phone", account.getPhone());
+		List<Account> al=accountService.list(1,10, null, null, eq, null, null, null, null, null, null, null);
+		if(al.size()>0){
+			if(al.get(0).getPhone().equals(account.getPhone())){
+				Map<String,Account> map=new HashMap<>();
+				result=ResultUtil.getSlefSRList("50000", "手机号已存在", MyJSON.getJSONObject(map));
+				return ERROR;
+			}
+		}
 		account.setCreateDate(new Date());
 		account.setLoginDate(new Date());
 		account.setPassword(MyDESutil.getMD5(account.getPassword()));
@@ -144,6 +155,21 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	* 更新
 	*/
 	public String update()  {
+		Map<String, Object> eq=new HashMap<>();
+		eq.put("phone", account.getPhone());
+		List<Account> al=accountService.list(1,10, null, null, eq, null, null, null, null, null, null, null);
+		if(al.size()>0){
+			if(al.get(0).getPhone().equals(account.getPhone())
+					&&!al.get(0).getAccountId().equals(account.getAccountId())){
+				Map<String,Account> map=new HashMap<>();
+					result=ResultUtil.getSlefSRList("50000", "手机号已存在", MyJSON.getJSONObject(map));
+				return ERROR;
+			}
+			if(!al.get(0).getPassword().equals(account.getPassword())){
+				account.setPassword(MyDESutil.getMD5(account.getPassword()));			
+			}
+			
+		}
 		return super.update(account);
 	}
 	/**

@@ -189,29 +189,30 @@
 				<nav class="sidebar-nav" style="background-image:linear-gradient(to right,#ccc 0, #000 0 )">
 					<ul id="leftBar">
 						<li>
-							<a onclick="business.clickLeftMenu('index')">
+							<a id="index" onclick="business.clickLeftMenu('index')">
 								<span class="glyphicon glyphicon-home"></span>
 								<span >首页</span>
 							</a>
 						</li>
-						<li >
-							<a href="javascript:;">
-								<span class="glyphicon glyphicon-flag"></span>
-								<span >管理员管理 </span>
+						<li>
+							<a href="javascript:;" >
+								<span class="glyphicon glyphicon-duplicate"></span>
+								<span >账户管理</span>
 								<span class="glyphicon arrow"></span>
 							</a>
 							<ul>
-								<li>
-									<a href="javascript:;">
-										<span class="glyphicon glyphicon-duplicate"></span>
-										<span >账户管理</span>
-										<span class="glyphicon arrow"></span>
-									</a>
-									<ul>
-										<li><a class="text-center" onclick="business.clickLeftMenu('teacher')">老师管理</a></li>
-										<li><a class="text-center" onclick="business.clickLeftMenu('student')">学生管理</a></li>
-									</ul>
-								</li>
+								<li><a class="text-center"  onclick="business.clickLeftMenu('teacher')">老师管理</a></li>
+								<li><a class="text-center "   onclick="business.clickLeftMenu('student')">学生管理</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;" >
+								<span class="glyphicon glyphicon-list-alt"></span>
+								<span >课程管理</span>
+								<span class="glyphicon arrow"></span>
+							</a>
+							<ul>
+								<li><a class="text-center"  onclick="business.clickLeftMenu('course')">课程管理</a></li>
 							</ul>
 						</li>
 					</ul>

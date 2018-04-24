@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.yayao.dao.BaseDao;
@@ -24,7 +25,7 @@ import com.yayao.dao.BaseDao;
  * @date 2018年4月17日
  */
 public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
-	@Resource
+	@Autowired
 	private SessionFactory sessionFactory;
 	public Session getSession() {
 		return sessionFactory.getCurrentSession();

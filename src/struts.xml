@@ -43,6 +43,14 @@
 	       <!-- 全局异常 --> 
 	       <global-exception-mappings>
 	            <exception-mapping 
+		            exception="com.yayao.exception.CommonRollbackException" 
+		            result="exception">
+	            </exception-mapping>
+	            <exception-mapping 
+		            exception="com.yayao.exception.CommonNotRollbackException" 
+		            result="exception">
+	            </exception-mapping>
+	            <exception-mapping 
 		            exception="java.lang.Exception" 
 		            result="exception">
 	            </exception-mapping>
@@ -82,6 +90,66 @@
 	<!-- 账户-->
 	<package name="account" namespace="/account"  extends="json-default">
 		<action name="*" class="com.yayao.action.AccountAction" method="{1}">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">exceptionAction</param>
+			</result>
+		</action>
+	</package>
+	<!-- 课程-->
+	<package name="course" namespace="/course"  extends="json-default">
+		<action name="*" class="com.yayao.action.CourseAction" method="{1}">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">exceptionAction</param>
+			</result>
+		</action>
+	</package>
+	<!-- 分数-->
+	<package name="score" namespace="/score"  extends="json-default">
+		<action name="*" class="com.yayao.action.ScoreAction" method="{1}">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">exceptionAction</param>
+			</result>
+		</action>
+	</package>
+	<!-- 教师课程-->
+	<package name="teacherCourse" namespace="/teacherCourse"  extends="json-default">
+		<action name="*" class="com.yayao.action.TeacherCourseAction" method="{1}">
+			<result name="success" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="error" type="json">
+				<param  name="root">result</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">exceptionAction</param>
+			</result>
+		</action>
+	</package>
+	<!-- 分析-->
+	<package name="analyse" namespace="/analyse"  extends="json-default">
+		<action name="*" class="com.yayao.action.AnalyseAction" method="{1}">
 			<result name="success" type="json">
 				<param  name="root">result</param>
 			</result>

@@ -4,7 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">学生列表</label>
 </div>
 <div style="margin:10px;">
-<button class="btn btn-primary" onclick="business.addClick('添加学生','#studentAdd')">添加学生</button>
+<button class="btn btn-primary" onclick="business.self.addClick()">添加学生</button>
 </div>
 <!-- 学生列表选择end -->
 <!-- 学生列表 -->
@@ -45,28 +45,51 @@
 </div> 
 <!--分页 end -->
 <!-- add -->
-<div id="studentAdd" style="display:none">
-<label  class="text-danger">※姓名</label>
-  <div class=" comment-input-margin">
-    <input type="text" class=" comment-input"  id="realname"  placeholder="2-16位">
-  </div>
-  <label class="text-danger" >※手机号</label>
-  <div class="comment-input-margin ">
-    <input type="text" class="comment-input"  id="phone"  placeholder="11位" >
-  </div>
-    <label  class="text-danger">※密码</label>
-  <div class=" comment-input-margin">
-    <input type="text" class=" comment-input"  name="password"   placeholder="6-16位">
-  </div>
-  <div class=" comment-input-margin" >
-    <button type="button" class="btn btn-primary" id="studentAddSubmit" >确定</button>
-  </div>
+<div id="studentAddWrap" style="display:none">
+	<div id="studentAdd" >
+	<label  class="text-danger">※姓名</label>
+	  <div class=" comment-input-margin">
+	    <input type="text" class=" comment-input"  id="realnameAdd"  placeholder="2-16位">
+	  </div>
+	  <label class="text-danger" >※手机号</label>
+	  <div class="comment-input-margin ">
+	    <input type="text" class="comment-input"  id="phoneAdd"  placeholder="11位" >
+	  </div>
+	    <label  class="text-danger">※密码</label>
+	  <div class=" comment-input-margin">
+	    <input type="text" class=" comment-input"  name="passwordAdd"   placeholder="6-16位">
+	  </div>
+	  <div class=" comment-input-margin" >
+	    <button type="button" class="btn btn-primary" id="studentAddSubmit" >确定</button>
+	  </div>
+	</div>
 </div>
 <!-- add end-->
+<!-- update -->
+<div id="studentUpdateWrap" style="display:none">
+	<div id="studentUpdate">
+	<label  class="text-danger">※姓名</label>
+	  <div class=" comment-input-margin">
+	    <input type="text" class=" comment-input"  id="realnameUpdate"  placeholder="2-16位">
+	  </div>
+	  <label class="text-danger" >※手机号</label>
+	  <div class="comment-input-margin ">
+	    <input type="text" class="comment-input"  id="phoneUpdate"  placeholder="11位" >
+	  </div>
+	    <label  class="text-danger">※密码</label>
+	  <div class=" comment-input-margin">
+	    <input type="text" class=" comment-input"  id="passwordUpdate"   placeholder="6-16位">
+	  </div>
+	  <div class=" comment-input-margin" >
+	    <button type="button" class="btn btn-primary" id="studentUpdateSubmit" >确定</button>
+	  </div>
+	</div>
+</div>
+<!-- update end-->
 </div>
 <script>
 //初始化列表
-	business.slef.getList=function(callback){
+	business.self.getList=function(callback){
   	//请求参数分角色
  	for(var i=0;i<business.roleList.length;i++){
 			if(business.roleList[i].name=='学生'){
@@ -100,7 +123,8 @@
 						      "<span>"+business.accountList[i].loginDate+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<button class='btn btn-warning'>修改</span>"+
+						       "<button class='btn btn-warning' onclick='business.self.updateClick("+ JSON.stringify(business.accountList[i])+")'>修改</span>"+
+						      "<button class='btn btn-danger' onclick='business.self.deleteClick("+business.accountList[i].accountId+")'>删除</span>"+
 						  "</td>"+
 						"</tr>";
 		}
@@ -112,28 +136,82 @@
      },business.params);
      }
 	//初始化
-	business.initPage(business.slef.getList);
-		/**
+	business.initPage(business.self.getList);
+	/**
      * 增加
      * p.addUrl 增加url
      * p.requestObject 请求参数对象
      * p.success 成功回调
      */
-    $(document).off("click","#studentAddSubmit");
-	$(document).on("click","#studentAddSubmit",function(){
-	business.addAccount={
-	realname:$("#realname").val(),
-	phone:$("#phone").val(),
-	password:$("#password").val(),
-	roleId:business.params.roleId
+ business.self.addClick=function(){
+     //显示model
+	 business.self.showModel('添加学生','#studentAddWrap','#studentAdd');
+	    $(document).off("click","#studentAddSubmit");
+		$(document).on("click","#studentAddSubmit",function(){
+		business.addAccount={
+		realname:$("#realnameAdd").val(),
+		phone:$("#phoneAdd").val(),
+		password:$("#passwordAdd").val(),
+		roleId:business.params.roleId
+		};
+		business.add({
+			url:'/account/add',
+			requestObject:'addAccount',
+			success:function(){
+			 $("#closeModal").click();
+			 //初始化
+			business.initPage(business.self.getList);
+			}
+		}); 
+		});
+	}
+	/**
+     * 修改
+     * p.url 修改url
+     * p.requestObject 请求参数对象
+     * p.success 成功回调
+     */
+	business.self.updateClick=function(account){
+	//显示model
+	 business.self.showModel('修改学生','#studentUpdateWrap','#studentUpdate');
+	 //放置对象
+	  $("#realnameUpdate").val(account.realname)
+	 $("#phoneUpdate").val(account.phone)
+	 //绑定
+	$(document).off("click","#studentUpdateSubmit");
+	$(document).on("click","#studentUpdateSubmit",function(){
+	business.updateAccount=account;//复制
+	business.updateAccount.realname=$("#realnameUpdate").val(),
+	business.updateAccount.phone=$("#phoneUpdate").val(),
+	business.updateAccount.password=$("#passwordUpdate").val().trim()!=""?$("#passwordUpdate").val():account.password,//如果不存在，就不修改
+	 business.update({
+      url:"/account/update",
+      requestObject:'updateAccount',
+      success:function(){
+      $("#closeModal").click();
+      //初始化
+		business.initPage(business.self.getList);
+      }
+      }); 
+	});
 	};
-	business.add({
-		url:'/account/add',
-		requestObject:'addAccount',
-		success:function(){
-		 $("#closeModal").click();
-		 business.slef.getList();
-		}
-	});
-	});
+	/**
+     * 删除
+     * p.url 修改url
+     * p.requestObject 请求参数对象
+     * p.success 成功回调
+     */
+     business.self.deleteClick=function(accountId){
+     business.deleteAccount={
+		accountId:accountId
+	};
+      business.delete({
+      url:"/account/delete",
+      requestObject:'deleteAccount',
+      success:function(){
+      //初始化
+	business.initPage(business.self.getList);
+      }
+      })
+     }
 </script>

@@ -11,13 +11,13 @@ import javax.persistence.Table;
 
 
 /**
- * 角色类
+ * 课程类
  * @author yy
  *
  */
 @Entity
-@Table(name="role_tb")
-public class Role implements java.io.Serializable {
+@Table(name="course_tb")
+public class Course implements java.io.Serializable {
 
 
 	/**
@@ -27,11 +27,12 @@ public class Role implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
 	@SequenceGenerator(name = "increment",initialValue = 1000)
-	private Integer roleId;
+	private Integer courseId;
 	/**
 	 * 名称
 	 */
 	private String name;
+	
 	/**
 	 * 描述
 	 */
@@ -40,11 +41,12 @@ public class Role implements java.io.Serializable {
 	 * 更新时间
 	 */
 	private Date updateDate;
-	public Integer getRoleId() {
-		return roleId;
+	
+	public Integer getCourseId() {
+		return courseId;
 	}
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
+	public void setCourseId(Integer courseId) {
+		this.courseId = courseId;
 	}
 	public String getName() {
 		return name;
@@ -67,5 +69,4 @@ public class Role implements java.io.Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
 }

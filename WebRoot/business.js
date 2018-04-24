@@ -1,7 +1,24 @@
 //定义业务根变量；
 business={
 	//私有对象放置地
-	slef:{},
+	self:{
+		//记录上次的元素
+		 elewrap:null,
+		//显示增加model 
+		//text标题，elewrap元素包裹，element元素
+		 showModel:function(text,elewrap,element){
+			$("#mySellerModal").click();
+			$("#mySellerModalLabel").text(text);
+			console.log($("#mySellerModalBody").html())
+			//还原上次的元素
+			$(business.self.elewrap).html($("#mySellerModalBody").html());
+			//包裹元素，原来的元素消失
+			$("#mySellerModalBody").html($(element));
+			//记录本次元素包裹
+			business.self.elewrap=elewrap;
+		 },
+		 
+	},
 	//定义全局域名
 	domainUrl:	myUtils.getDomain(),
 	//全局登录账户id	
@@ -61,8 +78,9 @@ business={
 		});
 	},
 	 //点击左边导航
-	clickLeftMenu:function (item){
-	 	$(".content_main").load(business.domainUrl+"/main/"+item+".html"); 
+	clickLeftMenu:function (item,$this){
+	 	//location.href=business.domainUrl+"/main.html?uri=/main/"+item+".html";
+		$(".content_main").load(business.domainUrl+"/main/"+item+".html");
 	 },
 	 
 	 //分页条信息
@@ -207,10 +225,19 @@ business={
 					params.total=data.data.total;
 					if(params.total<=0 ){
 						myUtils.myLoadingToast("暂无数据")
+						//清空table body
+						$("#tableTbody").html("");
+						//隐藏分页
+						$(".page_div").css("display","none");
 						//放入全局business
-						var tableTbody="<div class='text-center'>暂无数据</div>";
+						var tableTbody="<div class='text-center' id='noList'>暂无数据</div>";
 						$("table").after(tableTbody);
 		                return ;
+		            }else{
+		            	//去掉显示的
+		            	$("#noList").remove();
+		            	//显示分页
+						$(".page_div").css("display","block");
 		            }
 					$.ajax({
 						url:p.listUrl,
@@ -227,9 +254,15 @@ business={
 									}else{
 										myUtils.myLoadingToast("暂无数据")
 									}
+						},
+						error:function(){
+							myUtils.myLoadingToast("异常")
 						}	
 					});
 				}
+				},
+				error:function(){
+					myUtils.myLoadingToast("异常")
 				}
 			});
 	 },
@@ -260,7 +293,10 @@ business={
                 } else {
                 	myUtils.myLoadingToast("暂无数据")
                 }
-            }
+            },
+			error:function(){
+				myUtils.myLoadingToast("异常")
+			}
             });
 	   },
 	   /**
@@ -284,7 +320,10 @@ business={
 	                } else {
 	                	myUtils.myLoadingToast(data.msg)
 	                }  
-	              }
+	              },
+					error:function(){
+						myUtils.myLoadingToast("异常")
+					}
 	              })
 	    },
 	    /**
@@ -308,7 +347,11 @@ business={
                 }else{
                 	myUtils.myLoadingToast(data.msg)
                 }
-            }});
+            },
+			error:function(){
+				myUtils.myLoadingToast("异常")
+			}
+	    	});
 	    },
 	    /**
 	     * 删除
@@ -323,30 +366,23 @@ business={
 					url:p.url,
 					data:business[p.requestObject],
 					withCredentials: true,
-					sucess:function(data){
+					success:function(data){
 						if (data.code === 200) {
 							myUtils.myLoadingToast(data.msg);
 							if(typeof p.success=='function'){
 								p.success();
-							}else{
-								business.getList();
 							}
 						}else {
 							myUtils.myLoadingToast(data.msg);
 						}
+					},
+					error:function(){
+						myUtils.myLoadingToast("异常")
 					}
 				})
 			})
 	 },
-	//增加显示model
-	 addClick:function(text,bodyElement){
-		$("#mySellerModal").click();
-		$("#mySellerModalLabel").text(text);
-		$("#mySellerModalBody").html($(bodyElement))
-		$(bodyElement).show();
-	 }
 };
- 
 	//初始化判断是否登陆
 	business.initIslogin();
 	//初始化所有角色

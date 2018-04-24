@@ -3,6 +3,8 @@ package com.yayao.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yayao.dao.BaseDao;
@@ -17,7 +19,6 @@ import com.yayao.service.BaseService;
 public abstract class BaseServiceImpl<T,ID>  implements BaseService<T,ID>{
 	@Autowired
 	private BaseDao<T,ID> baseDao;
-
 	@Override
 	public boolean add(T t) {
 		return baseDao.add(t);
