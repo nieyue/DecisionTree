@@ -46,6 +46,11 @@ public class TeacherCourse implements java.io.Serializable {
 	 */
 	@Transient
 	private Course course;
+	/**
+	 * 账户
+	 */
+	@Transient
+	private Account account;
 	public Integer getTeacherCourseId() {
 		return teacherCourseId;
 	}
@@ -79,6 +84,11 @@ public class TeacherCourse implements java.io.Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+	public Account getAccount() {
+		return account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 	
 }

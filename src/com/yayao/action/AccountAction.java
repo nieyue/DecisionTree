@@ -121,6 +121,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	public String countAll()  {
 		Map<String, Object> eq=new HashMap<>();
 		eq.put("roleId", account.getRoleId());
+		eq.put("accountId", account.getAccountId());
 		return super.countAll(eq, null, null, null, null, null, null, null);
 	}
 	/**
@@ -129,6 +130,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 	public String list()  {
 		Map<String, Object> eq=new HashMap<>();
 		eq.put("roleId", account.getRoleId());
+		eq.put("accountId", account.getAccountId());
 		return super.list(super.pageNum, super.pageSize, super.orderName, super.orderWay, eq, null, null, null, null, null, null, null);
 	}
 	

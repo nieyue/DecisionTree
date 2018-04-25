@@ -168,7 +168,22 @@
 	}
 	.page_label{
 	}
-</style>
+	/**
+	**权限样式
+	*/
+	#accountMenu
+	,#accountListMenu
+	,#courseMenu
+	,#teacherMenu
+	,#studentMenu
+	,.addRoleMenu
+	,.updateRoleMenu
+	,.deleteRoleMenu
+	{
+	display:none;
+	}
+	
+	</style>
 
 
 </head>
@@ -194,18 +209,18 @@
 								<span >首页</span>
 							</a>
 						</li>
-						<li>
-							<a href="javascript:;" >
+						<li  id="accountListMenu">
+							<a href="javascript:;"  >
 								<span class="glyphicon glyphicon-duplicate"></span>
 								<span >账户管理</span>
 								<span class="glyphicon arrow"></span>
 							</a>
 							<ul>
-								<li><a class="text-center"  onclick="business.clickLeftMenu('teacher')">老师管理</a></li>
-								<li><a class="text-center "   onclick="business.clickLeftMenu('student')">学生管理</a></li>
+								<li id="teacherMenu"><a class="text-center"  onclick="business.clickLeftMenu('teacher')">教师管理</a></li>
+								<li id="studentMenu"><a class="text-center "   onclick="business.clickLeftMenu('student')">学生管理</a></li>
 							</ul>
 						</li>
-						<li>
+						<li  id="courseMenu">
 							<a href="javascript:;" >
 								<span class="glyphicon glyphicon-list-alt"></span>
 								<span >课程管理</span>
@@ -213,6 +228,16 @@
 							</a>
 							<ul>
 								<li><a class="text-center"  onclick="business.clickLeftMenu('course')">课程管理</a></li>
+							</ul>
+						</li>
+						<li  id="accountMenu">
+							<a href="javascript:;" >
+								<span class="glyphicon glyphicon-list-alt"></span>
+								<span >我的</span>
+								<span class="glyphicon arrow"></span>
+							</a>
+							<ul>
+								<li><a class="text-center"  onclick="business.clickLeftMenu('account')">账户</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -223,16 +248,6 @@
 		<div class="content_main">
 		</div>
 		
-		<div class="hid_div">
-		</div>
-		<div class="hid_main">
-				<div class="hid_font">确定要退出吗？</div><br>
-				<input type="button" class="btn btn-warning" id="sure" value="确定">&nbsp;&nbsp;&nbsp;
-				<input type="button" class="btn btn-success" id="off" value="取消">
-		</div>
-		<div class="load_div" style="display:none"> 
-			
-		</div>
 		<!-- 按钮触发模态框 -->
 		<button class="hide" data-toggle="modal" 
 		   data-target="#myModal" id="mySellerModal">

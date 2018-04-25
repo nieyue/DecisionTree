@@ -4,7 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">成绩列表</label>
 </div>
 <div style="margin:10px;">
-<button class="btn btn-primary" onclick="business.self.addClick()">添加成绩</button>
+<button class="btn btn-primary addRoleMenu" onclick="business.self.addClick()">添加成绩</button>
 </div>
 <!-- 成绩列表选择end -->
 <!-- 成绩列表 -->
@@ -15,8 +15,9 @@
 					<tr>
 					  <th>序号</th>
 					  <th>成绩id</th>
+					  <th>教师</th>
+					  <th>课程</th>
 					  <th>成绩</th>
-					  <th>学生账户</th>
 					  <th>更新时间</th>
 					  <th >操作</th> 
 					</tr>
@@ -47,13 +48,14 @@
 <!-- add -->
 <div id="scoreAddWrap" style="display:none">
 	<div id="scoreAdd" >
-	<label  class="text-danger">※名称</label>
+	<label  class="text-danger">※教师-课程</label>
 	  <div class=" comment-input-margin">
-	    <input type="text" class=" comment-input"  id="nameAdd"  placeholder="2-16位">
+	    <select id="teacherCourseAdd"   style="width:300px">
+	    </select>
 	  </div>
-	  <label class="text-danger" >※描述</label>
-	  <div class="comment-input-margin ">
-	    <textarea  class="comment-input"  id="dutyAdd"  placeholder="255位" ></textarea>
+	<label  class="text-danger">※成绩</label>
+	  <div class=" comment-input-margin">
+	    <input type="text"   id="scoreAdd1"   placeholder="0-100">
 	  </div>
 	  <div class=" comment-input-margin" >
 	    <button type="button" class="btn btn-primary" id="scoreAddSubmit" >确定</button>
@@ -64,13 +66,14 @@
 <!-- update -->
 <div id="scoreUpdateWrap" style="display:none">
 	<div id="scoreUpdate">
-	<label  class="text-danger">※名称</label>
+	<label  class="text-danger">※教师-课程</label>
 	  <div class=" comment-input-margin">
-	    <input type="text" class=" comment-input"  id="nameUpdate"  placeholder="2-16位">
+	     <select id="teacherCourseUpdate"   style="width:300px">
+	    </select>
 	  </div>
-	  <label class="text-danger" >※描述</label>
-	  <div class="comment-input-margin ">
-	    <textarea  class="comment-input"  id="dutyUpdate"  placeholder="255位" ></textarea>
+	  <label  class="text-danger">※成绩</label>
+	  <div class=" comment-input-margin">
+	    <input type="text"  id="scoreUpdate1"   placeholder="0-100">
 	  </div>
 	  <div class=" comment-input-margin" >
 	    <button type="button" class="btn btn-primary" id="scoreUpdateSubmit" >确定</button>
@@ -78,11 +81,43 @@
 	</div>
 </div>
 <!-- update end-->
+<!-- 建议-->
+<div style="margin:10px;">
+<hr>
+<label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">建议</label>
+<div id="analyse">sdfsdfsd</div>	
+</div>
 </div>
 <script>
- 
+ //初始化教师课程列表
+	business.self.getCourseList=function(){
+	business.getList({
+       countUrl:'/teacherCourse/countAll',
+       listUrl:'/teacherCourse/list',
+       async:false,
+       data:'teacherCourseList',
+       success:function(){
+       var courseSelect="";
+       for(var i=0;i<business.teacherCourseList.length;i++){
+          courseSelect+="<option  value="+business.teacherCourseList[i].teacherCourseId+">"+business.teacherCourseList[i].account.realname+"-"+business.teacherCourseList[i].course.name+"</option>";
+		}
+		//数据
+		$("#teacherCourseAdd").html(courseSelect);
+		$("#teacherCourseUpdate").html(courseSelect);
+		     }
+     },business.params);
+	}
+	business.self.getCourseList();
 	//初始化列表
 	business.self.getList=function(callback){
+	//学生id 
+	if(business.self.attribute.studentAccountId){
+	business.params.studentAccountId=business.self.attribute.studentAccountId;
+	}
+	//课程id
+	if(business.self.attribute.teacherCourseId){
+	business.params.teacherCourseId=business.self.attribute.teacherCourseId;
+	}
 	business.getList({
        countUrl:'/score/countAll',
        listUrl:'/score/list',
@@ -98,17 +133,20 @@
 						      "<span>"+business.scoreList[i].scoreId+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.scoreList[i].name+"</span>"+
+						      "<span>"+business.scoreList[i].teacherCourse.account.realname+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.scoreList[i].duty+"</span>"+
+						      "<span>"+business.scoreList[i].teacherCourse.course.name+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.scoreList[i].score+"</span>"+
 						  "</td>"+
 						  "<td>"+
 						      "<span>"+business.scoreList[i].updateDate+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<button class='btn btn-warning' onclick='business.self.updateClick("+ JSON.stringify(business.scoreList[i])+")'>修改</span>"+
-						      "<button class='btn btn-danger' onclick='business.self.deleteClick("+business.scoreList[i].scoreId+")'>删除</span>"+
+						      "<button class='btn btn-warning updateRoleMenu' onclick='business.self.updateClick("+ JSON.stringify(business.scoreList[i])+")'>修改</span>"+
+						      "<button class='btn btn-danger deleteRoleMenu' onclick='business.self.deleteClick("+business.scoreList[i].scoreId+")'>删除</span>"+
 						  "</td>"+
 						"</tr>";
 		}
@@ -128,13 +166,23 @@
      * p.success 成功回调
      */
      business.self.addClick=function(){
+     business.self.getCourseList();
      //显示model
 	 business.self.showModel('添加成绩','#scoreAddWrap','#scoreAdd');
 	    $(document).off("click","#scoreAddSubmit");
 		$(document).on("click","#scoreAddSubmit",function(){
-		business.addscore={
-		name:$("#nameAdd").val(),
-		duty:$("#dutyAdd").val()
+	    if(!myUtils.userVerification.merPrice.test($("#scoreAdd1").val())){
+	    myUtils.myLoadingToast("输入0-100成绩");
+	    	return;
+	    }
+	    if($("#scoreAdd1").val()>100){
+	    myUtils.myLoadingToast("成绩不能大于100");
+	    return;
+	    }
+		business.addScore={
+		studentAccountId:business.self.attribute.accountId,
+		teacherCourseId:$("#teacherCourseAdd option:selected").val(),
+		score:$("#scoreAdd1").val()
 		};
 		business.add({
 			url:'/score/add',
@@ -154,17 +202,26 @@
      * p.success 成功回调
      */
 	business.self.updateClick=function(score){
+	business.self.getCourseList();
 	//显示model
 	 business.self.showModel('修改成绩','#scoreUpdateWrap','#scoreUpdate');
 	 //放置对象
-	 $("#nameUpdate").val(score.name)
-	 $("#dutyUpdate").val(score.duty)
+	 $("#teacherCourseUpdate").find("option[value = '"+score.teacherCourseId+"']").attr("selected","selected");
+	 $("#scoreUpdate1").val(score.score)
 	 //绑定
 	$(document).off("click","#scoreUpdateSubmit");
 	$(document).on("click","#scoreUpdateSubmit",function(){
+	if(!myUtils.userVerification.merPrice.test($("#scoreUpdate1").val())){
+	    myUtils.myLoadingToast("输入0-100成绩");
+	    	return;
+	    }
+	    if($("#scoreUpdate1").val()>100){
+	    myUtils.myLoadingToast("成绩不能大于100");
+	    return;
+	    }
 	business.updateScore=score;//复制
-	business.updateScore.realname=$("#nameUpdate").val(),
-	business.updateScore.phone=$("#dutyUpdate").val(),
+	business.updateScore.teacherCourseId=$("#teacherCourseUpdate option:selected").val();
+	business.updateScore.score=$("#scoreUpdate1").val(),
 	 business.update({
       url:"/score/update",
       requestObject:'updateScore',

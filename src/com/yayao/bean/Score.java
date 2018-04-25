@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -44,6 +45,11 @@ public class Score implements java.io.Serializable {
 	 * 教师课程id
 	 */
 	private Integer teacherCourseId;
+	/**
+	 * 教师课程
+	 */
+	@Transient
+	private TeacherCourse teacherCourse;
 	public Integer getScoreId() {
 		return scoreId;
 	}
@@ -76,6 +82,12 @@ public class Score implements java.io.Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public TeacherCourse getTeacherCourse() {
+		return teacherCourse;
+	}
+	public void setTeacherCourse(TeacherCourse teacherCourse) {
+		this.teacherCourse = teacherCourse;
 	}
 	
 }

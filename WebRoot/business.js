@@ -2,6 +2,8 @@
 business={
 	//私有对象放置地
 	self:{
+		 //存放全局传递参数
+		 attribute:{},
 		//记录上次的元素
 		 elewrap:null,
 		//显示增加model 
@@ -23,6 +25,8 @@ business={
 	domainUrl:	myUtils.getDomain(),
 	//全局登录账户id	
 	sessionAccountId:null,
+	//全局登录账户	
+	sessionAccount:null,
 	//全局登录账户
 	sessionPhone:"",
 	//全局登录角色id
@@ -48,6 +52,7 @@ business={
 			success:function(data){
 				//console.log(data);
 				if(data.code==200){
+					business.sessionAccount=data.data.account;
 					business.sessionPhone=data.data.account.phone;
 					business.sessionAccountId=data.data.account.accountId;
 					business.sessionRoleId=data.data.account.roleId;
@@ -72,7 +77,35 @@ business={
 						business.sessionRole=business.roleList[i];
 					$(".role_name").text(business.sessionRole.name);
 					}
+					//给定角色的权限
 				}
+				setInterval(function(){
+				//一级导航级别
+				//所有可见，自身账户、账户列表
+				$("#accountMenu").css("display","block");	
+				$("#accountListMenu").css("display","block");	
+				//仅管理员可见
+				if(business.sessionRole.name=="超级管理员"){
+					$("#courseMenu").css("display","block");
+					//二级导航级别
+					$("#teacherMenu").css("display","block");				
+					$("#studentMenu").css("display","block");
+					//增删改按钮级别控制 class类，addRoleMenu,updateRoleMenu,deleteRoleMenu
+					$(".addRoleMenu").css("display","inline-block");				
+					$(".updateRoleMenu").css("display","inline-block");				
+					$(".deleteRoleMenu").css("display","inline-block");		
+				}
+				//二级导航级别
+				//只有教师可见
+				if(business.sessionRole.name=="教师"){
+					$("#teacherMenu").css("display","block");				
+				}
+				//只有学生可见
+				if(business.sessionRole.name=="学生"){
+					$("#studentMenu").css("display","block");					
+				}
+				},100);
+				
 				}
 			}	
 		});
@@ -185,24 +218,20 @@ business={
 	},	
 	 //退出 
 	 loginout:function(){
-		 $(".hid_div").css("display","block");
-			$(".hid_main").css("display","block");
-			$("#sure").click(function(){
-				$.ajax({
-					url:business.domainUrl+"/account/loginout",
-					data:{"accountId":business.SessionAccountId},
-					type:"get",
-					success:function(result){
-						if(result.code==200){
-							location.replace(business.domainUrl+"/login.html");
-						}	
-					}
-				});
-			});
-			$("#off").click(function(){
-				$(".hid_div").css("display","none");
-				$(".hid_main").css("display","none");
-			});
+		myUtils.myLoginOut("确定退出吗？", function() {
+			/**
+		     * 获取单个
+		     * p.url 列表url
+		     * p.data 返回列表
+		     * p.success 成功回调
+		     */
+			business.load({
+				url:"/account/loginout",
+				success:function(){
+					location.href="/";
+				}
+			})
+		})
 	 },
 	 /**
      * 获取列表
@@ -217,6 +246,7 @@ business={
 		 $.ajax({
 				url:p.countUrl,
 				type:"post",
+				async:p.async==true?true:false,
 				data:params,
 	            withCredentials: true,
 				success:function(data){
@@ -242,6 +272,7 @@ business={
 					$.ajax({
 						url:p.listUrl,
 						data:params,
+						async:p.async==true?true:false,
 						withCredentials: true,
 						type:"post",
 						success:function(data){
@@ -273,7 +304,7 @@ business={
      * p.data 返回列表
      * p.success 成功回调
      */
-	 get:function (p) {
+	 load:function (p) {
         //获取
     	$.ajax({
             method:"post",

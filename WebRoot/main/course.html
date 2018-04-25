@@ -163,8 +163,8 @@
 	$(document).off("click","#courseUpdateSubmit");
 	$(document).on("click","#courseUpdateSubmit",function(){
 	business.updateCourse=course;//复制
-	business.updateCourse.realname=$("#nameUpdate").val(),
-	business.updateCourse.phone=$("#dutyUpdate").val(),
+	business.updateCourse.name=$("#nameUpdate").val(),
+	business.updateCourse.duty=$("#dutyUpdate").val(),
 	 business.update({
       url:"/course/update",
       requestObject:'updateCourse',

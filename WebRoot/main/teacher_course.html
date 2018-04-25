@@ -4,7 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">教师课程列表</label>
 </div>
 <div style="margin:10px;">
-<button class="btn btn-primary" onclick="business.self.addClick()">添加教师课程</button>
+<button class="btn btn-primary addRoleMenu" onclick="business.self.addClick()">添加教师课程</button>
 </div>
 <!-- 教师课程列表选择end -->
 <!-- 教师课程列表 -->
@@ -16,7 +16,7 @@
 					  <th>序号</th>
 					  <th>教师课程id</th>
 					  <th>教师课程</th>
-					  <th>学生账户</th>
+					  <th>课程描述</th>
 					  <th>更新时间</th>
 					  <th >操作</th> 
 					</tr>
@@ -49,11 +49,8 @@
 	<div id="teacherCourseAdd" >
 	<label  class="text-danger">※名称</label>
 	  <div class=" comment-input-margin">
-	    <input type="text" class=" comment-input"  id="nameAdd"  placeholder="2-16位">
-	  </div>
-	  <label class="text-danger" >※描述</label>
-	  <div class="comment-input-margin ">
-	    <textarea  class="comment-input"  id="dutyAdd"  placeholder="255位" ></textarea>
+	    <select id="courseNameAdd"   style="width:100px">
+	    </select>
 	  </div>
 	  <div class=" comment-input-margin" >
 	    <button type="button" class="btn btn-primary" id="teacherCourseAddSubmit" >确定</button>
@@ -66,11 +63,8 @@
 	<div id="teacherCourseUpdate">
 	<label  class="text-danger">※名称</label>
 	  <div class=" comment-input-margin">
-	    <input type="text" class=" comment-input"  id="nameUpdate"  placeholder="2-16位">
-	  </div>
-	  <label class="text-danger" >※描述</label>
-	  <div class="comment-input-margin ">
-	    <textarea  class="comment-input"  id="dutyUpdate"  placeholder="255位" ></textarea>
+		  <select id="courseNameUpdate" style="width:100px">
+		  </select>
 	  </div>
 	  <div class=" comment-input-margin" >
 	    <button type="button" class="btn btn-primary" id="teacherCourseUpdateSubmit" >确定</button>
@@ -80,9 +74,28 @@
 <!-- update end-->
 </div>
 <script>
- 
+	//初始化课程列表
+	business.self.getCourseList=function(){
+	business.getList({
+       countUrl:'/course/countAll',
+       listUrl:'/course/list',
+       async:false,
+       data:'courseList',
+       success:function(){
+       var courseSelect="";
+       for(var i=0;i<business.courseList.length;i++){
+          courseSelect+="<option  value="+business.courseList[i].courseId+">"+business.courseList[i].name+"</option>";
+		}
+		//数据
+		$("#courseNameAdd").html(courseSelect);
+		$("#courseNameUpdate").html(courseSelect);
+		     }
+     },business.params);
+	}
+	business.self.getCourseList();
 	//初始化列表
 	business.self.getList=function(callback){
+	business.params.accountId=business.self.attribute.accountId;
 	business.getList({
        countUrl:'/teacherCourse/countAll',
        listUrl:'/teacherCourse/list',
@@ -98,17 +111,18 @@
 						      "<span>"+business.teacherCourseList[i].teacherCourseId+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.teacherCourseList[i].name+"</span>"+
+						      "<span>"+business.teacherCourseList[i].course.name+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<span>"+business.teacherCourseList[i].duty+"</span>"+
+						      "<span>"+business.teacherCourseList[i].course.duty+"</span>"+
 						  "</td>"+
 						  "<td>"+
 						      "<span>"+business.teacherCourseList[i].updateDate+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<button class='btn btn-warning' onclick='business.self.updateClick("+ JSON.stringify(business.teacherCourseList[i])+")'>修改</span>"+
-						      "<button class='btn btn-danger' onclick='business.self.deleteClick("+business.teacherCourseList[i].teacherCourseId+")'>删除</span>"+
+						  	  "<button class='btn btn-success' onclick='business.self.goScore("+ JSON.stringify(business.teacherCourseList[i])+")'>成绩</span>"+
+						      "<button class='btn btn-warning updateRoleMenu' onclick='business.self.updateClick("+ JSON.stringify(business.teacherCourseList[i])+")'>修改</span>"+
+						      "<button class='btn btn-danger deleteRoleMenu' onclick='business.self.deleteClick("+business.teacherCourseList[i].teacherCourseId+")'>删除</span>"+
 						  "</td>"+
 						"</tr>";
 		}
@@ -122,19 +136,31 @@
 	//初始化
 	business.initPage(business.self.getList);
 	/**
+	**跳转成绩
+	*/
+	business.self.goScore=function(teacherCourse){
+	//传递课程，学生id滞空
+	business.self.attribute.studentAccountId=null;
+	//设置传递参数
+	business.self.attribute.teacherCourseId=teacherCourse.teacherCourseId;
+	//加载
+	$(".content_main").load(business.domainUrl+"/main/score.html");
+	};
+	/**
      * 增加
      * p.addUrl 增加url
      * p.requestObject 请求参数对象
      * p.success 成功回调
      */
      business.self.addClick=function(){
+     business.self.getCourseList();
      //显示model
 	 business.self.showModel('添加教师课程','#teacherCourseAddWrap','#teacherCourseAdd');
 	    $(document).off("click","#teacherCourseAddSubmit");
 		$(document).on("click","#teacherCourseAddSubmit",function(){
-		business.addteacherCourse={
-		name:$("#nameAdd").val(),
-		duty:$("#dutyAdd").val()
+		business.addTeacherCourse={
+		courseId:$("#courseNameAdd option:selected").val(),
+		accountId:business.self.attribute.accountId
 		};
 		business.add({
 			url:'/teacherCourse/add',
@@ -154,17 +180,17 @@
      * p.success 成功回调
      */
 	business.self.updateClick=function(teacherCourse){
+	business.self.getCourseList();
 	//显示model
 	 business.self.showModel('修改教师课程','#teacherCourseUpdateWrap','#teacherCourseUpdate');
 	 //放置对象
-	 $("#nameUpdate").val(teacherCourse.name)
-	 $("#dutyUpdate").val(teacherCourse.duty)
+	$("#courseNameUpdate").find("option[value = '"+teacherCourse.course.courseId+"']").attr("selected","selected");
 	 //绑定
 	$(document).off("click","#teacherCourseUpdateSubmit");
 	$(document).on("click","#teacherCourseUpdateSubmit",function(){
-	business.updateteacherCourse=teacherCourse;//复制
-	business.updateteacherCourse.realname=$("#nameUpdate").val(),
-	business.updateteacherCourse.phone=$("#dutyUpdate").val(),
+	//teacherCourse.course={};
+	business.updateTeacherCourse=teacherCourse;//复制
+	business.updateTeacherCourse.courseId=$("#courseNameUpdate option:selected").val();
 	 business.update({
       url:"/teacherCourse/update",
       requestObject:'updateTeacherCourse',

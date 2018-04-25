@@ -4,7 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">教师列表</label>
 </div>
 <div style="margin:10px;">
-<button class="btn btn-primary" onclick="business.self.addClick()">添加教师</button>
+<button class="btn btn-primary addRoleMenu" onclick="business.self.addClick()">添加教师</button>
 </div>
 <!-- 教师列表选择end -->
 <!-- 教师列表 -->
@@ -98,6 +98,10 @@
 				business.params.roleId=business.roleList[i].roleId;
 		}
 	}
+	//如果访问账户为教师自己，则只能看到自己的
+	if(business.sessionRoleId==business.params.roleId){
+	business.params.accountId=business.sessionAccountId;
+	}
 	business.getList({
        countUrl:'/account/countAll',
        listUrl:'/account/list',
@@ -125,8 +129,9 @@
 						      "<span>"+business.accountList[i].loginDate+"</span>"+
 						  "</td>"+
 						  "<td>"+
-						      "<button class='btn btn-warning' onclick='business.self.updateClick("+ JSON.stringify(business.accountList[i])+")'>修改</span>"+
-						      "<button class='btn btn-danger' onclick='business.self.deleteClick("+business.accountList[i].accountId+")'>删除</span>"+
+						      "<button class='btn btn-success' onclick='business.self.goTeacherCourse("+ JSON.stringify(business.accountList[i])+")'>教师课程</span>"+
+						      "<button class='btn btn-warning updateRoleMenu' onclick='business.self.updateClick("+ JSON.stringify(business.accountList[i])+")'>修改</span>"+
+						      "<button class='btn btn-danger deleteRoleMenu' onclick='business.self.deleteClick("+business.accountList[i].accountId+")'>删除</span>"+
 						  "</td>"+
 						"</tr>";
 		}
@@ -139,6 +144,15 @@
 	}
 	//初始化
 	business.initPage(business.self.getList);
+	/**
+	**跳转教师课程
+	*/
+	business.self.goTeacherCourse=function(account){
+	//设置传递参数
+	business.self.attribute.accountId=account.accountId;
+	//加载
+	$(".content_main").load(business.domainUrl+"/main/teacher_course.html");
+	};
 	/**
      * 增加
      * p.addUrl 增加url
@@ -183,9 +197,14 @@
 	$(document).off("click","#teacherUpdateSubmit");
 	$(document).on("click","#teacherUpdateSubmit",function(){
 	business.updateAccount=account;//复制
-	business.updateAccount.realname=$("#realnameUpdate").val(),
-	business.updateAccount.phone=$("#phoneUpdate").val(),
-	business.updateAccount.password=$("#passwordUpdate").val().trim()!=""?$("#passwordUpdate").val():account.password,//如果不存在，就不修改
+	business.updateAccount.realname=$("#realnameUpdate").val();
+	business.updateAccount.phone=$("#phoneUpdate").val();
+	 //如果不存在，就不修改
+	if($("#passwordUpdate").val()){
+	business.updateAccount.password=$("#passwordUpdate").val();
+	}else{
+	business.updateAccount.password=account.password;
+	}
 	 business.update({
       url:"/account/update",
       requestObject:'updateAccount',
