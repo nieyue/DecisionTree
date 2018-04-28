@@ -85,10 +85,36 @@
 <div style="margin:10px;">
 <hr>
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">建议</label>
-<div id="analyse">sdfsdfsd</div>	
+<div id="analyse"></div>	
 </div>
 </div>
 <script>
+  //初始化分析结果
+	business.self.getAnalyseList=function(){
+	var params={};
+	if(business.self.attribute.studentAccountId){
+	params.type=2;
+	params.businessId=business.self.attribute.studentAccountId;
+	}
+	if(business.self.attribute.teacherCourseId){
+	params.type=1;
+	params.businessId=business.self.attribute.teacherCourseId;
+	}
+	business.getList({
+       countUrl:'/analyse/countAll',
+       listUrl:'/analyse/list',
+       data:'analyseList',
+       success:function(){
+       var a=business.analyseList[0];
+       var courseSelect="<div><span>更新时间：</span>"+a.updateDate+"</div>";
+       courseSelect+="<div><span>占比：</span>"+a.score+"</div>";
+       courseSelect+="<div><span>建议：</span>"+a.conclusion+"</div>";
+       console.log(business.analyseList[0])
+		//数据
+		$("#analyse").html(courseSelect);
+		     }
+     },params);
+	}
  //初始化教师课程列表
 	business.self.getCourseList=function(){
 	business.getList({
@@ -104,10 +130,12 @@
 		//数据
 		$("#teacherCourseAdd").html(courseSelect);
 		$("#teacherCourseUpdate").html(courseSelect);
+		
 		     }
      },business.params);
 	}
 	business.self.getCourseList();
+
 	//初始化列表
 	business.self.getList=function(callback){
 	//学生id 
@@ -154,11 +182,13 @@
 		$("#tableTbody").html(tableTbody);
 		//回调
 		callback();
+		
 		     }
      },business.params);
 	}
 	//初始化
 	business.initPage(business.self.getList);
+	business.self.getAnalyseList();
 	/**
      * 增加
      * p.addUrl 增加url
@@ -180,7 +210,7 @@
 	    return;
 	    }
 		business.addScore={
-		studentAccountId:business.self.attribute.accountId,
+		studentAccountId:business.self.attribute.studentAccountId,
 		teacherCourseId:$("#teacherCourseAdd option:selected").val(),
 		score:$("#scoreAdd1").val()
 		};
@@ -191,6 +221,7 @@
 			 $("#closeModal").click();
 			 //初始化
 			business.initPage(business.self.getList);
+			business.self.getAnalyseList();
 			}
 		}); 
 		});
@@ -229,6 +260,7 @@
       $("#closeModal").click();
       //初始化
 		business.initPage(business.self.getList);
+		business.self.getAnalyseList();
       }
       }); 
 	});
@@ -249,7 +281,10 @@
       success:function(){
       //初始化
 	business.initPage(business.self.getList);
+	business.self.getAnalyseList();
       }
       })
      }
+    
+	
 </script>

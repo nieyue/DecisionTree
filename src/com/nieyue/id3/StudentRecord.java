@@ -3,32 +3,73 @@ package com.nieyue.id3;
  * 描述成绩的评定
  */  
 public class StudentRecord extends BaseRecord{
-	private Double avgscore;
-	private Double score;
+	//比率=自身分数/平均分
+	private String scale;
+	//分数
+	private String score;
+	//账户id,不参与创建决策树，只用来做查询
+	private Integer accountId; 
+	//账户建议，不参与决策树
+	private String advise; 
 	
 	@Override
 	public String toString() {
-		return "StudentRecord [avgscore=" + avgscore + ", score=" + score + "]";
+		return "StudentRecord [scale=" + scale + ", score=" + score + "]";
 	}
+	
+	public StudentRecord(String scale, String score,Integer accountId,String advise,Boolean decisionAttr) {
+		super(decisionAttr);
+		this.scale = scale;
+		this.score = score;
+		this.accountId = accountId;
+		this.advise = advise;
+	}
+	public StudentRecord(String scale, String score,Integer accountId,Boolean decisionAttr) {
+		super(decisionAttr);
+		this.scale = scale;
+		this.score = score;
+		this.accountId = accountId;
+	}
+	public StudentRecord(String scale, String score,Boolean decisionAttr) {
+		super(decisionAttr);
+		this.scale = scale;
+		this.score = score;
+	}
+	public StudentRecord(String scale,Boolean decisionAttr) {
+		super(decisionAttr);
+		this.scale = scale;
+	}
+
 	public StudentRecord(Boolean decisionAttr) {
 		super(decisionAttr);
 	}
-	public StudentRecord(Double avgscore,Double score,Boolean decisionAttr) {
-		super(decisionAttr);
-		this.avgscore=avgscore;
-		this.score=score;
+	public String getScale() {
+		return scale;
 	}
-	public Double getScore() {
+	public void setScale(String scale) {
+		this.scale = scale;
+	}
+	public String getScore() {
 		return score;
 	}
-	public void setScore(Double score) {
+	public void setScore(String score) {
 		this.score = score;
 	}
-	public Double getAvgscore() {
-		return avgscore;
+
+	public Integer getAccountId() {
+		return accountId;
 	}
-	public void setAvgscore(Double avgscore) {
-		this.avgscore = avgscore;
-	}  
+
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getAdvise() {
+		return advise;
+	}
+
+	public void setAdvise(String advise) {
+		this.advise = advise;
+	}
     
 }  

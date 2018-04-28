@@ -7,5 +7,5 @@ import com.yayao.bean.Account;
 public interface AccountService extends BaseService<Account, Integer> {
 	
 	/** 账户登录 */
-	public Account accountLogin(String phone,String passwords);
+	public Account accountLogin(Integer accountId,String passwords);
 }

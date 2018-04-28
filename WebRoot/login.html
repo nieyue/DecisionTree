@@ -14,7 +14,7 @@
   		margin: 0 auto;
 		width:100% !important;
 		height:100%;
-		/* background:url(/static/images/2.jpg); */
+	/* 	background:url(/resources/img/bg.jpg);  */
 		background-size:100% 100%;
 		background-color: #fff;
 		box-shadow:0 0 0 5px #999;
@@ -35,10 +35,12 @@
 	    height: 450px;
 	    top:60px;
 	    line-height: 50%;
-	   /*  left: 50%;
-	    margin-left: -100px; */
+	    /*  left: 50%;
+	    margin-left: -100px;*/
 	    /* background: linear-gradient(to right, rgba(100,100,100,1), rgba(58,58,84,1) , rgba(200,200,200,1)); */
-  		    background: linear-gradient(to top, #fff, #000);
+  		 background: linear-gradient(to top, #fff, #53b4da); 
+  			/* background:url(/resources/img/bg.jpg) no-repeat; 
+  			background-size:100% 100%; */
   	}
 	.log_content{
 		position:absolute;
@@ -59,7 +61,7 @@
 		height: 237px;
 		top:530px;
 		/* background: linear-gradient(to right, rgba(100,100,100,1), rgba(58,58,84,1) , rgba(200,200,200,1)); */
-		    background: linear-gradient(to right, #000 ,#ececec);
+		   /*  background: linear-gradient(to right, #000 ,#ececec); */
 		font-size: 25px;
 	    padding: 27px;
 	    color: white;
@@ -95,8 +97,8 @@
 		<div class="content_div">
 			<div class="log_content">
 				<form>
-					<input type="text" id="user_name" name="phone" placeholder="手机号" /></br>
-					<input type="password" id="user_pass" name="password" placeholder="密码" /></br>
+					<input type="text" id="accountId" name="accountId" placeholder="登陆账户：id号" /></br>
+					<input type="password" id="password" name="password" placeholder="密码" /></br>
 					<input type="button" id="btn" class="btn btn-success" value="登录" /></br>
 				</form>
 				<div class="hint_div"></div>
@@ -133,8 +135,8 @@
 		});
 		//验证用户名和密码是否为空 
 		function show_hint(){
-			var userName=$("#user_name").val(); 
-			var userPass=$("#user_pass").val();
+			var userName=$("#accountId").val(); 
+			var userPass=$("#password").val();
 			if(userName==""||userPass==""){
 				$(".hint_div").html("请输入账号或密码");
 				return false;

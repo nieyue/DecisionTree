@@ -84,23 +84,30 @@ public class StudentTreeNode {
                 node.print(level);  
             }  
     }  
-    public void studentRecordPrint(int level,StudentRecord sr) {  
+	/**
+	 * 学生记录评级
+	 * @param level
+	 * @param sr
+	 */
+    public boolean studentRecordPrint(boolean b,int level,StudentRecord sr) {  
     	if(null == this)  
-    		return;  
+    		return b;  
     	for (int i=0; i<level;i++)  
     		System.out.print("-");  
     	System.out.println(this.getResult());  
     	level++;  
-    	if (null != this.getStudentTreeNodeList())  
+    	if (null != this.getStudentTreeNodeList()){  
     		for (StudentTreeNode node : this.getStudentTreeNodeList()) {  
-    			if(node.getStudentRecord().getAvgscore().equals(sr.getAvgscore())
-    					&&node.getStudentRecord().getScore().equals(sr.getScore())){
-    				System.err.println("("+node.getStudentRecord().getAvgscore()+"--"+node.getStudentRecord().getScore()+"--"+node.getStudentRecord().getDecisionAttr()+")");
-    			}
-    			//System.err.print("("+node.getAttrName()+")");  
-    			//System.err.print("("+node.getStudentRecord().getAvgscore()+"--"+node.getStudentRecord().getScore()+"--"+node.getStudentRecord().getDecisionAttr()+")");  
-    			node.studentRecordPrint(level,sr);  
+				if(sr.getScale().equals(node.getStudentRecord().getScale())
+						//&&sr.getScore().equals(node.getStudentRecord().getScore())
+						){
+					b=node.getStudentRecord().getDecisionAttr();
+					System.err.println("("+node.getStudentRecord().getScale()+"--"+node.getStudentRecord().getScore()+"--"+sr.getAccountId()+"--"+node.getStudentRecord().getDecisionAttr()+")");    					
+				}
+    			b=node.studentRecordPrint(b,level,sr);  
     		}  
+    	}
+    	return b;
     }  
     public static void main(String[] args) {
 		System.out.println(2);

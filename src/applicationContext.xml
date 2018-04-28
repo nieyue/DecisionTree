@@ -165,6 +165,8 @@
             <tx:method name="put*" propagation="REQUIRED" />
             <tx:method name="use*" propagation="REQUIRED"/> 
            
+            <tx:method name="student*" propagation="REQUIRED"/> 
+            <tx:method name="teacher*" propagation="REQUIRED"/> 
            
             
             <tx:method name="chk*" propagation="REQUIRED" read-only="true" />

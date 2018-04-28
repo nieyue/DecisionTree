@@ -66,7 +66,8 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	@Override
 	public boolean update(T t) {
 		try{
-			 getSession().merge(t);
+			 //getSession().merge(t);
+			 getSession().update(t);
 		        return true;
 		    }catch(Exception e){
 		        return false;

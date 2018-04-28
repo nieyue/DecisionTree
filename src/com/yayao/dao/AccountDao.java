@@ -6,5 +6,5 @@ import com.yayao.bean.Account;
 public interface AccountDao extends BaseDao<Account,Integer> {
 
 	/** 账户登录 */
-	public Account accountLogin(String phone,String passwords);
+	public Account accountLogin(Integer accountId,String passwords);
 }

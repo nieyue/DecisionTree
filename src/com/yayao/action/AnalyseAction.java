@@ -1,5 +1,7 @@
 package com.yayao.action;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,13 +59,19 @@ public class AnalyseAction extends BaseAction<Analyse,Integer>{
 	 * 数量
 	 */
 	public String countAll()  {
-		return super.countAll(null, null, null, null, null, null, null, null);
+		Map<String, Object> eq=new HashMap<>();
+		eq.put("businessId", analyse.getBusinessId());
+		eq.put("type", analyse.getType());
+		return super.countAll(eq, null, null, null, null, null, null, null);
 	}
 	/**
 	 * 查询
 	 */
 	public String list()  {
-		return super.list(super.pageNum, super.pageSize, super.orderName, super.orderWay, null, null, null, null, null, null, null, null);
+		Map<String, Object> eq=new HashMap<>();
+		eq.put("businessId", analyse.getBusinessId());
+		eq.put("type", analyse.getType());
+		return super.list(super.pageNum, super.pageSize, super.orderName, super.orderWay, eq, null, null, null, null, null, null, null);
 	}
 
 	

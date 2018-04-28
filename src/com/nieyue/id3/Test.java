@@ -1,71 +1,30 @@
 package com.nieyue.id3;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;  
+import java.lang.reflect.InvocationTargetException;  
   
 /** 
  * Created by wudi on 2016/1/23. 
  */  
-public class Test {  
-    public static void main(String[] arr) {  
-        List<BaseRecord> records = new ArrayList<BaseRecord>();  
-        HumanAttrRecord record0 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.HIGH,false, EmCreditRate.FAIR,false);  
-        HumanAttrRecord record1 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.HIGH,false, EmCreditRate.EXCELLENT,false);  
-        HumanAttrRecord record2 = new HumanAttrRecord(EmAgeLevel.MIDDLE_AGED, EmIncome.HIGH,false, EmCreditRate.FAIR,true);  
-        HumanAttrRecord record3 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.MEDIUM,false, EmCreditRate.FAIR,true);  
-        HumanAttrRecord record4 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.LOW,true, EmCreditRate.FAIR,true);  
-        HumanAttrRecord record5 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.LOW,true, EmCreditRate.EXCELLENT,false);  
-        HumanAttrRecord record6 = new HumanAttrRecord(EmAgeLevel.MIDDLE_AGED, EmIncome.LOW,true, EmCreditRate.EXCELLENT,true);  
-        HumanAttrRecord record7 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.MEDIUM,false, EmCreditRate.FAIR,false);  
-        HumanAttrRecord record8 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.LOW,true, EmCreditRate.FAIR,true);  
-        HumanAttrRecord record9 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.MEDIUM,true, EmCreditRate.FAIR,true);  
-        HumanAttrRecord record10 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.MEDIUM,true, EmCreditRate.EXCELLENT,true);  
-        HumanAttrRecord record11 = new HumanAttrRecord(EmAgeLevel.MIDDLE_AGED, EmIncome.MEDIUM,false, EmCreditRate.EXCELLENT,true);  
-        HumanAttrRecord record12 = new HumanAttrRecord(EmAgeLevel.MIDDLE_AGED, EmIncome.HIGH,true, EmCreditRate.FAIR,true);  
-       /* HumanAttrRecord record13 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.LOW,false, EmCreditRate.EXCELLENT,false); 
-        HumanAttrRecord record14 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.MEDIUM,false, EmCreditRate.FAIR,false); 
-        HumanAttrRecord record15 = new HumanAttrRecord(EmAgeLevel.MIDDLE_AGED, EmIncome.MEDIUM,true, EmCreditRate.EXCELLENT,true); 
-        HumanAttrRecord record16 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.LOW,false, EmCreditRate.EXCELLENT,true); 
-        HumanAttrRecord record17 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.HIGH,true, EmCreditRate.EXCELLENT,true); 
-        HumanAttrRecord record18 = new HumanAttrRecord(EmAgeLevel.YOUTH, EmIncome.MEDIUM,false, EmCreditRate.EXCELLENT,false); 
-        HumanAttrRecord record19 = new HumanAttrRecord(EmAgeLevel.SENIOR, EmIncome.LOW,false, EmCreditRate.FAIR,false); 
-*/  
-        records.add(record0);  
-        records.add(record1);  
-        records.add(record2);  
-        records.add(record3);  
-        records.add(record4);  
-        records.add(record5);  
-        records.add(record6);  
-        records.add(record7);  
-        records.add(record8);  
-        records.add(record9);  
-        records.add(record10);  
-        records.add(record11);  
-        records.add(record12);  
-  /*      records.add(record13); 
-        records.add(record14); 
-        records.add(record15); 
-        records.add(record16); 
-        records.add(record17); 
-        records.add(record18); 
-        records.add(record19);*/  
-  
-  
-        Set<Field> fieldSet = new HashSet<Field>();  
-        Field[] fields = HumanAttrRecord.class.getDeclaredFields();  
-        for (Field field : fields) {  
-            if(field.getName().equals("decisionAttr")) continue;;  
-            fieldSet.add(field);  
-        }  
-  
-        IAttrSelector selector = new BaseAttrSelector();  
-        DecisionTree decisionTree = new DecisionTree(selector);  
-        StudentTreeNode root = decisionTree.createStudentTree(records,fieldSet);  
-        if(null != root) {  
-            /*root.print(0);  */
-        }  
+public class Test {
+	IAttrSelector<StudentRecord> selector;  
+	  
+    public static void main(String[] arr) throws NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {  
+    	DecisionTree<StudentRecord> dt=new DecisionTree<StudentRecord>(new Test().selector);
+       // System.out.println(root);
+        	 //StudentRecord css2=new StudentRecord("<0.2","any",1000,true);
+        	//占比大于等于0.8  合格
+        	//StudentRecord css2=new StudentRecord(">=0.8","any",1000,true);
+             //占比大于等于0.2且小于0.8， 如果分数小于60  不合格,如果分数大于等于60 合格  （二级推断）
+             //StudentRecord css2=new StudentRecord(">=0.2&&<0.8","<60.0",1000,false);
+             //StudentRecord css2=new StudentRecord(">=0.2&&<0.8",">=60.0",1000,true);
+           //  System.err.println(dt.callStudentTree(css2));
+    	
+    	 //StudentRecord css2=new StudentRecord("<0.2","不合格",false);
+     	//StudentRecord css2=new StudentRecord(">=0.2&&<0.4",true);
+     	//StudentRecord css2=new StudentRecord(">=0.4&&<0.6","良",true);
+     	//StudentRecord css2=new StudentRecord(">=0.6&&<0.8","优秀",true);
+    	//占比大于等于0.2  合格
+     	StudentRecord css2=new StudentRecord("<0.2","any",1000,true);
+    	//StudentRecord css2=new StudentRecord(">=0.2","any",1000,true);
+             System.err.println(dt.callTeacherCourseTree(css2));
     }  
 }  

@@ -18,8 +18,8 @@ public class AccountServiceImpl extends BaseServiceImpl<Account,Integer> impleme
 	@Autowired
 	AccountDao accountDao;
 	/** 系统管理员登录 */
-	public Account accountLogin(String phone, String password){
-		Account account =accountDao.accountLogin(phone, password);
+	public Account accountLogin(Integer accountId, String password){
+		Account account =accountDao.accountLogin(accountId, password);
 		if(account!=null){
 			account.setLoginDate(new Date());
 			accountDao.update(account);

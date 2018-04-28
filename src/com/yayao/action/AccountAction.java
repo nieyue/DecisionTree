@@ -53,7 +53,8 @@ public class AccountAction extends BaseAction<Account,Integer>{
 		Map<String,Object> session = ActionContextUtil.getSession();
 		Map<String,Object> map=new HashMap<String,Object>();
 		String shapwd = MyDESutil.getMD5(account.getPassword());
-		Account a=accountService.accountLogin(account.getPhone(),shapwd);
+		Account a=accountService.accountLogin(account.getAccountId(),shapwd);
+		//Account a=accountService.accountLogin(account.getPhone(),shapwd);
 		if(a==null){
 			map.put("account", a);
 			result=ResultUtil.getSlefSRList("40000", "账户或密码错误", MyJSON.getJSONObject(map));

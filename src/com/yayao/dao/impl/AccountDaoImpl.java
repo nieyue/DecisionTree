@@ -17,10 +17,10 @@ public class AccountDaoImpl extends BaseDaoImpl<Account,Integer> implements Acco
 	/** 
 	 * 账户登录
 	 */
-	public Account accountLogin(String phone, String password)  {
+	public Account accountLogin(Integer accountId, String password)  {
 			
 		    Criteria c = getSession().createCriteria(Account.class);
-			c.add(Restrictions.eq("phone", phone));
+			c.add(Restrictions.eq("accountId", accountId));
 			c.add(Restrictions.eq("password",password));
 			Account Account = (Account) c.uniqueResult();
 			return Account;

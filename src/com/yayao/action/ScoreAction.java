@@ -6,11 +6,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.nieyue.id3.DecisionTreeBusiness;
 import com.yayao.bean.Account;
 import com.yayao.bean.Course;
 import com.yayao.bean.Score;
 import com.yayao.bean.TeacherCourse;
 import com.yayao.service.AccountService;
+import com.yayao.service.AnalyseService;
 import com.yayao.service.CourseService;
 import com.yayao.service.ScoreService;
 import com.yayao.service.TeacherCourseService;
@@ -37,6 +39,9 @@ public class ScoreAction extends BaseAction<Score,Integer>{
 	private CourseService courseService;
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private AnalyseService analyseService;
+	private DecisionTreeBusiness decisionTreeBusiness=new DecisionTreeBusiness();
 	private Score score=new Score();//成绩模型
 
 	@Override
@@ -58,7 +63,17 @@ public class ScoreAction extends BaseAction<Score,Integer>{
 			return ERROR;
 		}
 		score.setUpdateDate(new Date());
-		return super.add(score);
+		String r=super.add(score);
+		//决策树切入点
+		if(r.equals(SUCCESS)){
+			if(score.getStudentAccountId()!=null&&!score.getStudentAccountId().equals(0)){
+				decisionTreeBusiness.student(scoreService,analyseService,score.getStudentAccountId());				
+			}
+			if(score.getTeacherCourseId()!=null&&!score.getTeacherCourseId().equals(0)){
+				decisionTreeBusiness.teacher(scoreService,analyseService,score.getTeacherCourseId());				
+			}
+		}
+		return r;
 	}
 	/**
 	* 更新
@@ -70,7 +85,17 @@ public class ScoreAction extends BaseAction<Score,Integer>{
 		if(oldScore.getStudentAccountId().equals(score.getStudentAccountId())
 				&&oldScore.getTeacherCourseId().equals(score.getTeacherCourseId())){
 			score.setUpdateDate(new Date());
-			return super.update(score);
+			String rr=super.update(score);
+			//决策树切入点
+			if(rr.equals(SUCCESS)){
+				if(score.getStudentAccountId()!=null&&!score.getStudentAccountId().equals(0)){
+					decisionTreeBusiness.student(scoreService,analyseService,score.getStudentAccountId());				
+				}
+				if(score.getTeacherCourseId()!=null&&!score.getTeacherCourseId().equals(0)){
+					decisionTreeBusiness.teacher(scoreService,analyseService,score.getTeacherCourseId());				
+				}
+			}
+			return rr;
 		}
 		eq.put("studentAccountId", score.getStudentAccountId());
 		eq.put("teacherCourseId", score.getTeacherCourseId());
@@ -82,13 +107,34 @@ public class ScoreAction extends BaseAction<Score,Integer>{
 			return ERROR;
 		}
 		score.setUpdateDate(new Date());
-		return super.update(score);
+		String r=super.update(score);
+		//决策树切入点
+		if(r.equals(SUCCESS)){
+			if(score.getStudentAccountId()!=null&&!score.getStudentAccountId().equals(0)){
+				decisionTreeBusiness.student(scoreService,analyseService,score.getStudentAccountId());				
+			}
+			if(score.getTeacherCourseId()!=null&&!score.getTeacherCourseId().equals(0)){
+				decisionTreeBusiness.teacher(scoreService,analyseService,score.getTeacherCourseId());				
+			}
+		}
+		return r;
 	}
 	/**
 	 * 删除
 	 */
 	public String delete()  {
-		return super.delete(score.getScoreId());
+		Score s=scoreService.load(score.getScoreId());
+		String r=super.delete(score.getScoreId());
+		//决策树切入点
+		if(r.equals(SUCCESS)){
+			if(s.getStudentAccountId()!=null&&!s.getStudentAccountId().equals(0)){
+				decisionTreeBusiness.student(scoreService,analyseService,s.getStudentAccountId());				
+			}
+			if(s.getTeacherCourseId()!=null&&!s.getTeacherCourseId().equals(0)){
+				decisionTreeBusiness.teacher(scoreService,analyseService,s.getTeacherCourseId());				
+			}
+		}
+		return r;
 	}
 	/**
 	*加载
