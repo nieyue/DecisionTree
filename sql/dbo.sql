@@ -12,7 +12,7 @@
  Target Server Version : 10001600
  File Encoding         : 65001
 
- Date: 25/04/2018 18:39:25
+ Date: 28/04/2018 15:54:53
 */
 
 
@@ -128,6 +128,46 @@ GO
 
 
 -- ----------------------------
+-- Records of analyse_tb
+-- ----------------------------
+SET IDENTITY_INSERT [dbo].[analyse_tb] ON
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'6', N'3', N'您本次的成绩不合格，不要灰心，请改变学习方法！', N'0.530000000000000', N'3', N'2', N'2018-04-28 15:06:28.087')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'10', N'2', N'您的课程教育良好，请下次继续努力，冲进优秀！', N'0.430000000000000', N'3', N'1', N'2018-04-28 15:06:46.097')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'12', N'29', N'您的整体成绩非常优秀，请下次继续加油，保持！', N'0.950000000000000', N'3', N'2', N'2018-04-28 14:49:41.413')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'13', N'4', N'您的课程教育良好，请下次继续努力，冲进优秀！', N'0.430000000000000', N'3', N'1', N'2018-04-28 15:06:28.157')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'14', N'1', N'您的课程教育合格，请再接再厉！', N'0.500000000000000', N'3', N'1', N'2018-04-28 15:04:46.663')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'15', N'30', N'您的整体成绩良好，请下次继续努力，冲进优秀！', N'0.830000000000000', N'3', N'2', N'2018-04-28 15:04:19.670')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'16', N'31', N'您的整体成绩合格，请下次再接再厉，继续保持！', N'0.670000000000000', N'3', N'2', N'2018-04-28 15:06:46.090')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'17', N'32', N'您的整体成绩合格，请下次再接再厉，继续保持！', N'0.760000000000000', N'3', N'2', N'2018-04-28 15:04:34.447')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'18', N'33', N'您的整体成绩合格，请下次再接再厉，继续保持！', N'0.700000000000000', N'3', N'2', N'2018-04-28 15:04:41.263')
+GO
+
+INSERT INTO [dbo].[analyse_tb] ([analyse_id], [business_id], [conclusion], [score], [sub_type], [type], [update_date]) VALUES (N'19', N'34', N'您的整体成绩合格，请下次再接再厉，继续保持！', N'0.600000000000000', N'3', N'2', N'2018-04-28 15:04:46.620')
+GO
+
+SET IDENTITY_INSERT [dbo].[analyse_tb] OFF
+GO
+
+
+-- ----------------------------
 -- Table structure for course_tb
 -- ----------------------------
 IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[course_tb]') AND type IN ('U'))
@@ -229,25 +269,22 @@ GO
 SET IDENTITY_INSERT [dbo].[score_tb] ON
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'1', N'33.000000000000000', N'3', N'2', N'2018-04-25 16:54:31.447')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'4', N'45.000000000000000', N'3', N'6', N'2018-04-28 13:17:13.577')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'4', N'44.000000000000000', N'3', N'1', N'2018-04-25 16:56:08.520')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'6', N'59.000000000000000', N'3', N'4', N'2018-04-28 15:06:28.070')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'6', N'88.000000000000000', N'3', N'4', N'2018-04-25 17:04:27.337')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'7', N'94.000000000000000', N'29', N'1', N'2018-04-28 14:49:41.407')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'7', N'96.000000000000000', N'29', N'1', N'2018-04-25 17:05:13.810')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'8', N'92.000000000000000', N'29', N'2', N'2018-04-28 14:47:03.647')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'8', N'90.000000000000000', N'29', N'2', N'2018-04-25 17:04:46.400')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'9', N'98.000000000000000', N'29', N'4', N'2018-04-28 14:37:13.603')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'9', N'98.000000000000000', N'29', N'4', N'2018-04-25 17:05:07.980')
-GO
-
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'10', N'84.000000000000000', N'30', N'1', N'2018-04-25 17:06:23.547')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'10', N'83.000000000000000', N'30', N'1', N'2018-04-28 15:04:19.660')
 GO
 
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'11', N'85.000000000000000', N'30', N'2', N'2018-04-25 17:06:05.013')
@@ -256,16 +293,16 @@ GO
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'12', N'82.000000000000000', N'30', N'4', N'2018-04-25 17:06:28.880')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'13', N'65.000000000000000', N'31', N'1', N'2018-04-25 17:06:51.263')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'13', N'65.000000000000000', N'31', N'1', N'2018-04-28 15:04:27.917')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'14', N'68.000000000000000', N'31', N'2', N'2018-04-25 17:06:56.153')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'14', N'68.000000000000000', N'31', N'2', N'2018-04-28 15:06:46.073')
 GO
 
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'15', N'67.000000000000000', N'31', N'4', N'2018-04-25 17:07:06.020')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'16', N'85.000000000000000', N'32', N'1', N'2018-04-25 17:09:33.883')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'16', N'85.000000000000000', N'32', N'1', N'2018-04-28 15:04:34.433')
 GO
 
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'17', N'87.000000000000000', N'32', N'2', N'2018-04-25 17:09:39.460')
@@ -274,7 +311,7 @@ GO
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'18', N'55.000000000000000', N'32', N'4', N'2018-04-25 17:09:44.557')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'19', N'54.000000000000000', N'33', N'1', N'2018-04-25 17:10:41.187')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'19', N'54.000000000000000', N'33', N'1', N'2018-04-28 15:04:41.253')
 GO
 
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'20', N'67.000000000000000', N'33', N'2', N'2018-04-25 17:10:46.740')
@@ -283,13 +320,16 @@ GO
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'21', N'89.000000000000000', N'33', N'4', N'2018-04-25 17:10:55.567')
 GO
 
-INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'22', N'45.000000000000000', N'34', N'1', N'2018-04-25 17:11:31.297')
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'22', N'45.000000000000000', N'34', N'1', N'2018-04-28 15:04:46.613')
 GO
 
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'23', N'58.000000000000000', N'34', N'2', N'2018-04-25 17:11:35.797')
 GO
 
 INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'24', N'78.000000000000000', N'34', N'4', N'2018-04-25 17:11:40.500')
+GO
+
+INSERT INTO [dbo].[score_tb] ([score_id], [score], [student_account_id], [teacher_course_id], [update_date]) VALUES (N'31', N'55.000000000000000', N'3', N'2', N'2018-04-28 14:40:07.690')
 GO
 
 SET IDENTITY_INSERT [dbo].[score_tb] OFF
@@ -343,6 +383,12 @@ INSERT INTO [dbo].[teacher_course_tb] ([teacher_course_id], [account_id], [cours
 GO
 
 INSERT INTO [dbo].[teacher_course_tb] ([teacher_course_id], [account_id], [course_id], [update_date]) VALUES (N'9', N'4', N'12', N'2018-04-25 13:59:53.597')
+GO
+
+INSERT INTO [dbo].[teacher_course_tb] ([teacher_course_id], [account_id], [course_id], [update_date]) VALUES (N'10', N'9', N'11', N'2018-04-26 12:04:09.347')
+GO
+
+INSERT INTO [dbo].[teacher_course_tb] ([teacher_course_id], [account_id], [course_id], [update_date]) VALUES (N'11', N'9', N'13', N'2018-04-26 12:04:23.340')
 GO
 
 SET IDENTITY_INSERT [dbo].[teacher_course_tb] OFF
