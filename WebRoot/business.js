@@ -261,7 +261,9 @@ business={
 						$(".page_div").css("display","none");
 						//放入全局business
 						var tableTbody="<div class='text-center' id='noList'>暂无数据</div>";
-						$("table").after(tableTbody);
+						if(!$("#noList")[0]){
+							$("table").after(tableTbody);							
+						}
 		                return ;
 		            }else{
 		            	//去掉显示的

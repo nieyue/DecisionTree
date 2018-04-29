@@ -44,8 +44,14 @@ public class DecisionTreeBusiness  {
 			}
 		}
 		//scale=Arith.div(selfScore,totalScore);
-		scale=Arith.div(Arith.div(selfScore, selfSize),100);
-		Map<String,String> studentMap=getStudentMap(scale,Arith.div(selfScore, selfSize));
+		double s=0;
+		if(selfSize<=0){
+			s=0;
+		}else{
+			s=Arith.div(selfScore, selfSize);			
+		}
+		scale=Arith.div(s,100);
+		Map<String,String> studentMap=getStudentMap(scale,s);
 		DecisionTree<StudentRecord> dt=new DecisionTree<StudentRecord>(new DecisionTreeBusiness().selector);
 	    StudentRecord css2=new StudentRecord(studentMap.get("scale"),studentMap.get("score"),studentAccountId,true);
 	    boolean result=dt.callStudentTree(css2);
@@ -142,8 +148,18 @@ public class DecisionTreeBusiness  {
 				ylSize+=1;
 			}
 		}
-		scale=Arith.div( ylSize,totalSize);
-		Map<String,String> studentMap=getTeacherMap(scale,Arith.div(ylScore, ylSize));
+		if(totalSize<=0){
+			scale=0.0;
+		}else{
+			scale=Arith.div(ylSize, totalSize);			
+		}
+		double s=0;
+		if(ylSize<=0){
+			s=0;
+		}else{
+			s=Arith.div(ylScore, ylSize);			
+		}
+		Map<String,String> studentMap=getTeacherMap(scale,s);
 		DecisionTree<StudentRecord> dt=new DecisionTree<StudentRecord>(new DecisionTreeBusiness().selector);
 	    StudentRecord css2=new StudentRecord(studentMap.get("scale"),studentMap.get("score"),teacherCourseId,true);
 	    boolean result=dt.callTeacherCourseTree(css2);
