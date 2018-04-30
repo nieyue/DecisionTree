@@ -183,9 +183,18 @@ public class ScoreAction extends BaseAction<Score,Integer>{
 					tc.setCourse(c);
 					Account a=accountService.load(tc.getAccountId());
 					tc.setAccount(a);
+					s.setTeacherCourse(tc);
 				}
-				TeacherCourse tc=tcl.get(0);
-				s.setTeacherCourse(tc);
+				//TeacherCourse ntc=tcl.get(0);
+				//s.setTeacherCourse(ntc);
+				
+				Map<String, Object> eq2=new HashMap<>();
+				eq2.put("accountId", s.getStudentAccountId());
+				List<Account> al2=accountService.list(1, 10, null, null, eq2, null, null, null, null, null, null, null);
+				for (int z = 0; z < al2.size(); z++) {
+					Account a=al2.get(z);
+					s.setStudentAccount(a);
+				}
 			}
 			map.put("list", sl);
 			result=ResultUtil.getSlefSRSuccessList(

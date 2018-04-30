@@ -3,7 +3,7 @@ package com.nieyue.id3;
  * 描述成绩的评定
  */  
 public class StudentRecord extends BaseRecord{
-	//比率=自身分数/平均分
+	//比率
 	private String scale;
 	//分数
 	private String score;
@@ -12,10 +12,6 @@ public class StudentRecord extends BaseRecord{
 	//账户建议，不参与决策树
 	private String advise; 
 	
-	@Override
-	public String toString() {
-		return "StudentRecord [scale=" + scale + ", score=" + score + "]";
-	}
 	
 	public StudentRecord(String scale, String score,Integer accountId,String advise,Boolean decisionAttr) {
 		super(decisionAttr);

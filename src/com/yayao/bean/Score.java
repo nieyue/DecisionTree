@@ -46,10 +46,22 @@ public class Score implements java.io.Serializable {
 	 */
 	private Integer teacherCourseId;
 	/**
+	 * 学生
+	 */
+	@Transient
+	private Account studentAccount;
+	/**
 	 * 教师课程
 	 */
 	@Transient
 	private TeacherCourse teacherCourse;
+	
+	public Account getStudentAccount() {
+		return studentAccount;
+	}
+	public void setStudentAccount(Account studentAccount) {
+		this.studentAccount = studentAccount;
+	}
 	public Integer getScoreId() {
 		return scoreId;
 	}
