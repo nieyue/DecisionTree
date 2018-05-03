@@ -1,4 +1,4 @@
-package com.nieyue.id3;
+package com.yayao.id3;
 /** 
  * 描述成绩的评定
  */  
@@ -7,6 +7,8 @@ public class StudentRecord extends BaseRecord{
 	private String scale;
 	//分数
 	private String score;
+	//是否偏科
+	private String isPartial;
 	//账户id,不参与创建决策树，只用来做查询
 	private Integer accountId; 
 	//账户建议，不参与决策树

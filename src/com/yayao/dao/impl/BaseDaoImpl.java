@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.MapUtils;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
+import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -28,7 +30,9 @@ public abstract class BaseDaoImpl<T,ID> implements BaseDao<T,ID>{
 	@Autowired
 	private SessionFactory sessionFactory;
 	public Session getSession() {
-		return sessionFactory.getCurrentSession();
+		Session session=sessionFactory.getCurrentSession();
+		//session.setFlushMode(FlushMode.COMMIT);//
+		return session;
 		//return sessionFactory.openSession();
 	}
 	/**

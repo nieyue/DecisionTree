@@ -4,6 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">教师课程列表</label>
 </div>
 <div style="margin:10px;">
+<button class="btn btn-warning " onclick="business.self.goBack()">返回</button>
 <button class="btn btn-primary addRoleMenu" onclick="business.self.addClick()">添加教师课程</button>
 </div>
 <!-- 教师课程列表选择end -->
@@ -220,5 +221,12 @@
 	business.initPage(business.self.getList);
       }
       })
+     }
+     
+     /**
+     **返回教师管理
+     */
+     business.self.goBack=function(){
+       business.clickLeftMenu('teacher');
      }
 </script>

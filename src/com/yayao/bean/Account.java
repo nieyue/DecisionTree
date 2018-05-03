@@ -42,6 +42,14 @@ public class Account implements java.io.Serializable {
 	 */
 	private String realname;
 	/**
+	 * 性别 ,1男 ，2女，0是其他
+	 */
+	private Integer sex;
+	/**
+	 * 年龄
+	 */
+	private Integer age;
+	/**
 	 * 创建时间
 	 */
 	private Date createDate;
@@ -126,6 +134,22 @@ public class Account implements java.io.Serializable {
 
 	public void setLoginDate(Date loginDate) {
 		this.loginDate = loginDate;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
 	}
 	
 }

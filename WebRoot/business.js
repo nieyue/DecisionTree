@@ -56,7 +56,7 @@ business={
 					business.sessionPhone=data.data.account.phone;
 					business.sessionAccountId=data.data.account.accountId;
 					business.sessionRoleId=data.data.account.roleId;
-				$(".name_top a").html(business.sessionPhone);
+				$(".name_top a").html(business.sessionAccount.realname||business.sessionPhone);
 				}else{
 					location.replace(business.domainUrl+"/login.html");
 				}

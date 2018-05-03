@@ -1,4 +1,4 @@
-package com.nieyue.id3;
+package com.yayao.id3;
 /** 
  * 基础记录，这里只有一个属性，就是要分类的属性Boolean的，其他数据库实体都应该继承该类
  */  

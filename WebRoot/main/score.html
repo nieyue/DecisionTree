@@ -4,6 +4,7 @@
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">成绩列表</label>
 </div>
 <div style="margin:10px;">
+<button class="btn btn-warning " onclick="business.self.goBack()">返回</button>
 <button class="btn btn-primary addRoleMenu" onclick="business.self.addClick()">添加成绩</button>
 </div>
 <!-- 成绩列表选择end -->
@@ -87,7 +88,7 @@
 <div style="margin:10px;">
 <hr>
 <label  class="text-danger nieyueText" style="font-size:30px;color:#ccc;">建议</label>
-<div id="analyse"></div>	
+<div id="analyse" style="white-space:pre"></div>	
 </div>
 </div>
 <script>
@@ -294,5 +295,16 @@
       })
      }
     
-	
+	 /**
+     **返回教师课程管理或者学生管理
+     */
+     business.self.goBack=function(){
+     	if(business.self.attribute.studentAccountId){
+       business.clickLeftMenu('student');
+     	}
+     	if(business.self.attribute.teacherCourseId){
+     	
+       business.clickLeftMenu('teacher_course');
+     	}
+     }
 </script>

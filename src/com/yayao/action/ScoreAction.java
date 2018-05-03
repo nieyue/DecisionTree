@@ -6,11 +6,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.nieyue.id3.DecisionTreeBusiness;
 import com.yayao.bean.Account;
 import com.yayao.bean.Course;
 import com.yayao.bean.Score;
 import com.yayao.bean.TeacherCourse;
+import com.yayao.id3.DecisionTreeBusiness;
 import com.yayao.service.AccountService;
 import com.yayao.service.AnalyseService;
 import com.yayao.service.CourseService;
@@ -41,7 +41,9 @@ public class ScoreAction extends BaseAction<Score,Integer>{
 	private AccountService accountService;
 	@Autowired
 	private AnalyseService analyseService;
-	private DecisionTreeBusiness decisionTreeBusiness=new DecisionTreeBusiness();
+	@Autowired
+	private DecisionTreeBusiness decisionTreeBusiness;
+	//private DecisionTreeBusiness decisionTreeBusiness=new DecisionTreeBusiness();
 	private Score score=new Score();//成绩模型
 
 	@Override

@@ -14,6 +14,15 @@
 	  <div class="comment-input-margin ">
 	    <input type="text" class="comment-input"  id="phoneUpdate"  placeholder="11位" >
 	  </div>
+	  <label class="text-danger" >性别</label>
+	  <div class="comment-input-margin ">
+	     <select id="sexUpdate" style="width:100px">
+		  </select>
+	  </div>
+	  <label class="text-danger" >年龄</label>
+	  <div class="comment-input-margin ">
+	    <input type="text" class="comment-input"  id="ageUpdate"  placeholder="0-200" >
+	  </div>
 	    <label  class="text-danger">※密码</label>
 	  <div class=" comment-input-margin">
 	    <input type="text" class=" comment-input"  name="passwordUpdate"   placeholder="6-16位">
@@ -28,8 +37,24 @@
 </div>
 <script>
 	//初始化
-	$("#realnameUpdate").val(business.sessionAccount.realname),
-	$("#phoneUpdate").val(business.sessionAccount.phone),
+	business.self.sexList=[
+	{id:0,value:'未知'},
+	{id:1,value:'男'},
+	{id:2,value:'女'}
+	];
+	$("#realnameUpdate").val(business.sessionAccount.realname);
+	$("#phoneUpdate").val(business.sessionAccount.phone);
+	var sexSelect="";
+       for(var i=0;i<business.self.sexList.length;i++){
+          sexSelect+="<option  value="+business.self.sexList[i].id+">"+business.self.sexList[i].value+"</option>";
+		}
+	$("#sexUpdate").html(sexSelect);
+	business.self.sexList.forEach(function(elt, i, array) {
+		if(elt.id==business.sessionAccount.sex){
+		$("#sexUpdate").find("option[value = '"+elt.id+"']").attr("selected","selected");
+		}
+	})
+	$("#ageUpdate").val(business.sessionAccount.age);
 	/**
      * 修改
      * p.url 修改url
@@ -42,6 +67,13 @@
 	business.updateAccount=business.sessionAccount;//复制
 	business.updateAccount.realname=$("#realnameUpdate").val();
 	business.updateAccount.phone=$("#phoneUpdate").val();
+	business.updateAccount.sex=$("#sexUpdate option:selected").val();
+	business.updateAccount.age=$("#ageUpdate").val();
+	if(business.updateAccount.age>200 ||business.updateAccount.age<0){
+	myUtils.myLoadingToast("0-200", function() {
+	})
+	return;
+	}
 	//如果不存在，就不修改
 	if($("#passwordUpdate").val()){
 	business.updateAccount.password=$("#passwordUpdate").val();
@@ -55,6 +87,7 @@
       $("#closeModal").click();
       //初始化
 	  business.sessionAccount=business.updateAccount;
+	  location.href="/main.html";
 	  console.log(business.sessionAccount)
       }
       }); 

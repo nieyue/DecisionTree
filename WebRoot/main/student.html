@@ -16,6 +16,8 @@
 					  <th>序号</th>
 					  <th>学生id</th>
 					  <th>姓名</th>
+					  <th>性别</th>
+					  <th>年龄</th>
 					  <th>手机号</th>
 					  <th>创建时间</th>
 					  <th>最后登陆时间</th>
@@ -51,6 +53,15 @@
 	  <div class=" comment-input-margin">
 	    <input type="text" class=" comment-input"  id="realnameAdd"  placeholder="2-16位">
 	  </div>
+	    <label class="text-danger" >性别</label>
+	  <div class="comment-input-margin ">
+	     <select id="sexAdd" style="width:100px">
+		  </select>
+	  </div>
+	  <label class="text-danger" >年龄</label>
+	  <div class="comment-input-margin ">
+	    <input type="text" class="comment-input"  id="ageAdd"  placeholder="0-200" >
+	  </div>
 	  <label class="text-danger" >※手机号</label>
 	  <div class="comment-input-margin ">
 	    <input type="text" class="comment-input"  id="phoneAdd"  placeholder="11位" >
@@ -72,6 +83,15 @@
 	  <div class=" comment-input-margin">
 	    <input type="text" class=" comment-input"  id="realnameUpdate"  placeholder="2-16位">
 	  </div>
+	    <label class="text-danger" >性别</label>
+	  <div class="comment-input-margin ">
+	     <select id="sexUpdate" style="width:100px">
+		  </select>
+	  </div>
+	  <label class="text-danger" >年龄</label>
+	  <div class="comment-input-margin ">
+	    <input type="text" class="comment-input"  id="ageUpdate"  placeholder="0-200" >
+	  </div>
 	  <label class="text-danger" >※手机号</label>
 	  <div class="comment-input-margin ">
 	    <input type="text" class="comment-input"  id="phoneUpdate"  placeholder="11位" >
@@ -90,6 +110,11 @@
 </div>
 <script>
 //初始化列表
+business.self.sexList=[
+	{id:0,value:'未知'},
+	{id:1,value:'男'},
+	{id:2,value:'女'}
+	];
 	business.self.getList=function(callback){
   	//请求参数分角色
  	for(var i=0;i<business.roleList.length;i++){
@@ -119,6 +144,12 @@
 						      "<span>"+business.accountList[i].realname+"</span>"+
 						  "</td>"+
 						  "<td>"+
+						      "<span>"+business.self.sexList[business.accountList[i].sex].value+"</span>"+
+						  "</td>"+
+						  "<td>"+
+						      "<span>"+business.accountList[i].age+"</span>"+
+						  "</td>"+
+						  "<td>"+
 						      "<span>"+business.accountList[i].phone+"</span>"+
 						  "</td>"+
 						  "<td>"+
@@ -136,6 +167,12 @@
 		}
 		//表格数据
 		$("#tableTbody").html(tableTbody);
+		var sexSelect="";
+       for(var i=0;i<business.self.sexList.length;i++){
+          sexSelect+="<option  value="+business.self.sexList[i].id+">"+business.self.sexList[i].value+"</option>";
+		}
+	$("#sexAdd").html(sexSelect);
+	$("#sexUpdate").html(sexSelect);
 		//回调
 		callback();
        }
@@ -165,8 +202,15 @@
 	 business.self.showModel('添加学生','#studentAddWrap','#studentAdd');
 	    $(document).off("click","#studentAddSubmit");
 		$(document).on("click","#studentAddSubmit",function(){
+		if($("#ageAdd").val()>200 ||$("#ageAdd").val()<0){
+		myUtils.myLoadingToast("0-200", function() {
+		});
+		return;
+		}
 		business.addAccount={
 		realname:$("#realnameAdd").val(),
+		sex:$("#sexAdd option:selected").val(),
+		age:$("#ageAdd").val(),
 		phone:$("#phoneAdd").val(),
 		password:$("#passwordAdd").val(),
 		roleId:business.params.roleId
@@ -192,14 +236,23 @@
 	//显示model
 	 business.self.showModel('修改学生','#studentUpdateWrap','#studentUpdate');
 	 //放置对象
-	  $("#realnameUpdate").val(account.realname)
-	 $("#phoneUpdate").val(account.phone)
+	  $("#realnameUpdate").val(account.realname);
+	 $("#phoneUpdate").val(account.phone);
+	 $("#sexUpdate").find("option[value = '"+account.sex+"']").attr("selected","selected");
+	 $("#ageUpdate").val(account.age);
 	 //绑定
 	$(document).off("click","#studentUpdateSubmit");
 	$(document).on("click","#studentUpdateSubmit",function(){
 	business.updateAccount=account;//复制
 	business.updateAccount.realname=$("#realnameUpdate").val();
 	business.updateAccount.phone=$("#phoneUpdate").val();
+	business.updateAccount.sex=$("#sexUpdate option:selected").val();
+	business.updateAccount.age=$("#ageUpdate").val();
+	if($("#ageUpdate").val()>200 ||$("#ageUpdate").val()<0){
+		myUtils.myLoadingToast("0-200", function() {
+		});
+		return;
+		}
 	  //如果不存在，就不修改
 	if($("#passwordUpdate").val()){
 	business.updateAccount.password=$("#passwordUpdate").val();

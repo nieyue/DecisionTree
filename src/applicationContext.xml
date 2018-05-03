@@ -36,8 +36,9 @@
                     -->  
 
 <!-- cp30配置方式 -->
+		<!-- destroy-method="close" -->
 	<bean id="dataSource"
-		class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		class="com.mchange.v2.c3p0.ComboPooledDataSource" >
 		<!--  <property name="driverClass"
 			value="com.mysql.jdbc.Driver">
 			</property>
@@ -169,9 +170,11 @@
             <tx:method name="teacher*" propagation="REQUIRED"/> 
            
             
+            <tx:method name="list*" propagation="REQUIRED" read-only="true" />
             <tx:method name="chk*" propagation="REQUIRED" read-only="true" />
-            <tx:method name="mem*" propagation="REQUIRED" read-only="true" />
-            <tx:method name="admin*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="count*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="login*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="islogin" propagation="REQUIRED" read-only="true" />
             <tx:method name="load*" propagation="REQUIRED" read-only="true" />
             <tx:method name="browse*" propagation="REQUIRED" read-only="true" />
             <tx:method name="*" read-only="true" />

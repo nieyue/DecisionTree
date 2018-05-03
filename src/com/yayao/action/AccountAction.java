@@ -108,7 +108,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 		Map<String,Object>  session = ActionContextUtil.getSession();
 		Map<String,Object> map=new HashMap<String,Object>();
 		if(session.get("account")!=null) {
-			map.put("account", session.get("account"));
+			map.put("account", accountService.load(((Account)session.get("account")).getAccountId()));
 			result=ResultUtil.getSlefSRSuccessList(MyJSON.getJSONObject(map));
 			return SUCCESS;
 		}
@@ -173,6 +173,7 @@ public class AccountAction extends BaseAction<Account,Integer>{
 			}
 			
 		}
+		Map<String,Object>  session = ActionContextUtil.getSession();
 		return super.update(account);
 	}
 	/**

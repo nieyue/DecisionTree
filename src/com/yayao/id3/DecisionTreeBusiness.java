@@ -1,14 +1,23 @@
-package com.nieyue.id3;
+package com.yayao.id3;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.yayao.bean.Account;
 import com.yayao.bean.Analyse;
+import com.yayao.bean.Course;
 import com.yayao.bean.Score;
+import com.yayao.bean.TeacherCourse;
 import com.yayao.service.AnalyseService;
+import com.yayao.service.CourseService;
 import com.yayao.service.ScoreService;
+import com.yayao.service.TeacherCourseService;
 import com.yayao.util.Arith;
 
 /**
@@ -16,8 +25,13 @@ import com.yayao.util.Arith;
  * @author 聂跃
  * @date 2018年4月28日
  */
+@Component
 public class DecisionTreeBusiness  {
 	IAttrSelector<StudentRecord> selector;
+	@Autowired
+	TeacherCourseService teacherCourseService;
+	@Autowired
+	CourseService courseService;
     /**
      * 学生决策树执行
      * @param studentAccountId
@@ -25,6 +39,8 @@ public class DecisionTreeBusiness  {
 	public  void student(ScoreService scoreService,AnalyseService analyseService,Integer studentAccountId){
 		//所有成绩都查出
 		List<Score> scoreList=scoreService.list(1, Integer.MAX_VALUE, null, null, null, null, null, null, null, null, null, null);
+		//总成绩
+		List<Score> dScore=new ArrayList<>();
 		//总成绩
 		Double totalScore=0.0;
 		//总成绩数目
@@ -41,7 +57,11 @@ public class DecisionTreeBusiness  {
 			if(score.getStudentAccountId().equals(studentAccountId)){
 				selfScore+=score.getScore();
 				selfSize+=1;
+				if(score.getScore()<60){
+					dScore.add(score);
+					}
 			}
+			
 		}
 		//scale=Arith.div(selfScore,totalScore);
 		double s=0;
@@ -51,7 +71,7 @@ public class DecisionTreeBusiness  {
 			s=Arith.div(selfScore, selfSize);			
 		}
 		scale=Arith.div(s,100);
-		Map<String,String> studentMap=getStudentMap(scale,s);
+		Map<String,String> studentMap=getStudentMap(scale,s,dScore);
 		DecisionTree<StudentRecord> dt=new DecisionTree<StudentRecord>(new DecisionTreeBusiness().selector);
 	    StudentRecord css2=new StudentRecord(studentMap.get("scale"),studentMap.get("score"),studentAccountId,true);
 	    boolean result=dt.callStudentTree(css2);
@@ -89,11 +109,12 @@ public class DecisionTreeBusiness  {
      * 学生规则分配
      * @param studentAccountId
      */
-	public Map<String,String> getStudentMap(Double scale,Double score){
+	public Map<String,String> getStudentMap(Double scale,Double score,List<Score> dScore){
 		Map<String,String> map=new HashMap<>();
 		String s="<0.2";
 		String ss="any";
 		String c="";
+		String dc="";
 		if(scale>=0.8){
 			s=">=0.8";
 		 if(score<90.0){
@@ -113,6 +134,22 @@ public class DecisionTreeBusiness  {
 		}else if(scale<0.2){
 			s="<0.2";
 			c="您本次的成绩不合格，不要灰心，请改变学习方法！";
+		}
+		if(dScore.size()>0){
+			c+="\n";
+			for (int i = 0; i < dScore.size(); i++) {
+				Score ddd = dScore.get(i);
+				Map<String, Object> eq1=new HashMap<>();
+				eq1.put("teacherCourseId", ddd.getTeacherCourseId());
+				List<TeacherCourse> tcl=teacherCourseService.list(1, 10, null, null, eq1, null, null, null, null, null, null, null);
+				for (int j = 0; j < tcl.size(); j++) {
+					TeacherCourse tc=tcl.get(j);
+					Course course=courseService.load(tc.getCourseId());
+					tc.setCourse(course);
+					ddd.setTeacherCourse(tc);
+				}
+				c+="您的偏课："+ddd.getTeacherCourse().getCourse().getName()+"，只有"+ddd.getScore()+"分!"+"\n";
+			}
 		}
 		map.put("scale", s);
 		map.put("score", ss);
